@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserViewController">
+            <connections>
+                <outlet property="avatarImageView" destination="h00-4h-upQ" id="UBR-16-Phk"/>
+                <outlet property="contentVIew" destination="pwR-nn-fam" id="OXQ-6x-9r0"/>
+                <outlet property="userNameLabel" destination="Qk0-Pf-uEB" id="HKh-Ef-BgT"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" bouncesZoom="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <view key="tableHeaderView" contentMode="scaleToFill" id="pwR-nn-fam">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="woman.png" translatesAutoresizingMaskIntoConstraints="NO" id="h00-4h-upQ">
+                        <rect key="frame" x="90" y="10" width="70" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="70" id="3BR-aD-4nQ"/>
+                            <constraint firstAttribute="width" constant="70" id="c5U-An-3ap"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="35"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="未登录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qk0-Pf-uEB">
+                        <rect key="frame" x="170" y="35" width="51" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <gestureRecognizers/>
+                <constraints>
+                    <constraint firstItem="h00-4h-upQ" firstAttribute="centerY" secondItem="pwR-nn-fam" secondAttribute="centerY" id="2kj-C6-KKf"/>
+                    <constraint firstItem="Qk0-Pf-uEB" firstAttribute="leading" secondItem="h00-4h-upQ" secondAttribute="trailing" constant="10" id="6Cd-3c-rfP"/>
+                    <constraint firstItem="h00-4h-upQ" firstAttribute="centerX" secondItem="pwR-nn-fam" secondAttribute="centerX" constant="-35" id="iiB-1I-DAJ"/>
+                    <constraint firstItem="Qk0-Pf-uEB" firstAttribute="centerY" secondItem="pwR-nn-fam" secondAttribute="centerY" id="vYj-an-yxO"/>
+                </constraints>
+                <connections>
+                    <outletCollection property="gestureRecognizers" destination="zaR-Nx-9uW" appends="YES" id="zRN-gI-dev"/>
+                </connections>
+            </view>
+            <connections>
+                <outlet property="dataSource" destination="-1" id="Tng-2m-Rnh"/>
+                <outlet property="delegate" destination="-1" id="9aC-8N-iBw"/>
+            </connections>
+            <point key="canvasLocation" x="173" y="-1209"/>
+        </tableView>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tapGestureRecognizer id="zaR-Nx-9uW">
+            <connections>
+                <action selector="tapHeaderVIew:" destination="-1" id="byB-nf-BWd"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="woman.png" width="64" height="64"/>
+    </resources>
+</document>

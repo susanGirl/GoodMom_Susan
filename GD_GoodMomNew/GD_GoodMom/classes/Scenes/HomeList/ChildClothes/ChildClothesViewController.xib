@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChildClothesViewController">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="ztQ-QL-4zM"/>
+                <outlet property="webView" destination="THW-hs-wSn" id="pWH-ab-KH0"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THW-hs-wSn">
+                    <rect key="frame" x="0.0" y="30" width="600" height="570"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                </webView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="THW-hs-wSn" secondAttribute="trailing" id="2ux-JM-rxx"/>
+                <constraint firstAttribute="bottom" secondItem="THW-hs-wSn" secondAttribute="bottom" id="EAd-e0-vfn"/>
+                <constraint firstItem="THW-hs-wSn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="q00-T1-Smr"/>
+                <constraint firstItem="THW-hs-wSn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="sah-Hd-kAU"/>
+            </constraints>
+            <point key="canvasLocation" x="135" y="361"/>
+        </view>
+    </objects>
+</document>

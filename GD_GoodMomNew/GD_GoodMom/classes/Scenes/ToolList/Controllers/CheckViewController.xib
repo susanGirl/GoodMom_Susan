@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CheckViewController">
+            <connections>
+                <outlet property="detailTextView" destination="uRb-qF-2ax" id="g7G-f5-dDf"/>
+                <outlet property="titleTextFiled" destination="bZX-FY-58A" id="Q6M-i2-ACW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="5.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="sQM-1C-eYp">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bZX-FY-58A">
+                    <rect key="frame" x="10" y="74" width="394" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="uRb-qF-2ax">
+                    <rect key="frame" x="10" y="114" width="394" height="612"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="0.59477887309999999" green="0.81526442310000002" blue="0.60790072019999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="sQM-1C-eYp" secondAttribute="bottom" id="Cjg-K5-BaC"/>
+                <constraint firstAttribute="trailing" secondItem="bZX-FY-58A" secondAttribute="trailing" constant="10" id="XWg-4J-Lxs"/>
+                <constraint firstItem="bZX-FY-58A" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="bUH-0f-ykL"/>
+                <constraint firstItem="sQM-1C-eYp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="g8f-uZ-Ndj"/>
+                <constraint firstItem="sQM-1C-eYp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="lYT-FJ-0t1"/>
+                <constraint firstAttribute="trailing" secondItem="sQM-1C-eYp" secondAttribute="trailing" id="owk-31-hPr"/>
+                <constraint firstItem="bZX-FY-58A" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="vFI-gB-zYr"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <point key="canvasLocation" x="549" y="306"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="5.jpg" width="683" height="966"/>
+    </resources>
+</document>

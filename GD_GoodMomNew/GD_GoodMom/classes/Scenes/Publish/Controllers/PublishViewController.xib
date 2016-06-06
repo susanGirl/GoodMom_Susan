@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PublishViewController">
+            <connections>
+                <outlet property="bgImageView" destination="PBl-2B-9ZA" id="mJI-hc-OeX"/>
+                <outlet property="cancelButton" destination="awo-Uk-A5d" id="lXF-R0-y4c"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PBl-2B-9ZA" userLabel="背景图片">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awo-Uk-A5d" userLabel="取消按钮">
+                    <rect key="frame" x="50" y="540" width="500" height="40"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="NIM-IV-m8W"/>
+                        <constraint firstAttribute="width" constant="200" id="gcn-I2-jVi"/>
+                    </constraints>
+                    <state key="normal" title="取消"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="gcn-I2-jVi"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="aDW-ub-cat"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="awo-Uk-A5d" secondAttribute="bottom" constant="20" id="13I-xS-SKv"/>
+                <constraint firstItem="awo-Uk-A5d" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="5YW-ZK-4RM"/>
+                <constraint firstAttribute="bottom" secondItem="PBl-2B-9ZA" secondAttribute="bottom" id="PDN-JJ-4Fx"/>
+                <constraint firstItem="PBl-2B-9ZA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PiG-c0-k8b"/>
+                <constraint firstItem="awo-Uk-A5d" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ZBJ-WQ-R4t"/>
+                <constraint firstAttribute="trailing" secondItem="awo-Uk-A5d" secondAttribute="trailing" constant="50" id="bJO-3S-rXC"/>
+                <constraint firstItem="PBl-2B-9ZA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="krW-AH-SYn"/>
+                <constraint firstAttribute="trailing" secondItem="PBl-2B-9ZA" secondAttribute="trailing" id="zPK-Z2-pY0"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

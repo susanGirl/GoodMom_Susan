@@ -1,0 +1,75 @@
+//
+//  MyHeader.pch
+//  GD_GoodMom
+//
+//  Created by lanou3g on 16/5/23.
+//  Copyright © 2016年 温哲. All rights reserved.
+//
+
+#ifndef MyHeader_pch
+#define MyHeader_pch
+
+
+#import "UIView+XMGExtension.h"
+#import "HomeListViewController.h"
+#import "FriendsListViewController.h"
+#import "ToolListViewController.h"
+#import "NoteController.h"
+#import "DetailViewController.h"
+#import "CheckViewController.h"
+#import "StoryController.h"
+#import "StoryDetailViewController.h"
+
+#import "ToolModel.h"
+#import "NoteModel.h"
+#import "StoryModel.h"
+#import "detailModel.h"
+
+#import "ToolCell.h"
+#import "NoteCell.h"
+#import "StoryCell.h"
+#import "StoryDetailCell.h"
+
+#import "DBHandle.h"
+#import <sqlite3.h>
+#import "FileDataHandle.h"
+
+#import "UIBarButtonItem+HREctension.h"
+//#import "UIView+HREctension.h"
+#import "UIImage+ImageContentWithColor.h"
+#import <SDWebImage/SDImageCache.h>
+
+
+#pragma mark --首页添加宏开始--
+
+#import <UIImageView+WebCache.h>
+
+#import "HomeModel.h"
+#import "Modoules.h"
+#import "Data.h"
+#import "Pic.h"
+
+#import "Outlet_items.h"
+#import "Image_index.h"
+#import "Outlets_infos.h"
+
+#import "CellType_1.h"
+#import "CellType_2.h"
+#import "CellType_3.h"
+#import "CellType_4.h"
+#import "CellType_7.h"
+#pragma mark --首页添加宏结束--
+
+
+#define kScreenW [UIScreen mainScreen].bounds.size.width
+#define kScreenH [UIScreen mainScreen].bounds.size.height
+
+#define COLOR_arc   arc4random_uniform(100)/ 100.0 
+// 宏定义RGB颜色
+#define kRGBColor(r, g, b, a) [UIColor colorWithRed:(r) / 255.0 green:(g) / 255.0 blue:(b) / 255.0 alpha:(a)]
+// 所有控制器背景色
+#define kGlobalBackgroudColor kRGBColor(233, 233, 233, 1.0)
+
+#endif /* MyHeader_pch */
+
+
