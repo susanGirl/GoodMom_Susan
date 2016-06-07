@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="knowledge" rowHeight="88" id="KGk-i7-Jjw" customClass="KnowledgeCell">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="87"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ohV-iW-X2n">
+                        <rect key="frame" x="8" y="8" width="207" height="71"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Py2-O2-Unp">
+                        <rect key="frame" x="225" y="18" width="159" height="52"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="159" id="aRo-MR-1K8"/>
+                            <constraint firstAttribute="height" constant="52" id="doH-NB-y90"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ohV-iW-X2n" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="HtQ-HV-lr4"/>
+                    <constraint firstItem="Py2-O2-Unp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Wqw-Q5-JjY"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ohV-iW-X2n" secondAttribute="bottom" id="azf-3c-zhZ"/>
+                    <constraint firstItem="Py2-O2-Unp" firstAttribute="leading" secondItem="ohV-iW-X2n" secondAttribute="trailing" constant="10" id="cDu-jT-3qF"/>
+                    <constraint firstItem="ohV-iW-X2n" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="rYl-eQ-jJ7"/>
+                    <constraint firstItem="ohV-iW-X2n" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.5" id="vzY-Ul-oNO"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="iconImage" destination="ohV-iW-X2n" id="pi5-D9-mhi"/>
+                <outlet property="titleLabel" destination="Py2-O2-Unp" id="bZL-bo-hkV"/>
+            </connections>
+            <point key="canvasLocation" x="387" y="400"/>
+        </tableViewCell>
+    </objects>
+</document>

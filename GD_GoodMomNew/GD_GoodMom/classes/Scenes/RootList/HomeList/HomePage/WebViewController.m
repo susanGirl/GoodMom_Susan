@@ -7,9 +7,9 @@
 //
 
 #import "WebViewController.h"
-
+#import "MBProgressHUD+gifHUD.h"
 @interface WebViewController ()<UIWebViewDelegate>
-
+@property(assign,nonatomic)BOOL  flag;
 @end
 
 @implementation WebViewController
@@ -23,49 +23,47 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:COLOR_arc green:COLOR_arc blue:COLOR_arc alpha:1.0];
     
-    webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 30, kScreenW, kScreenH-70)];
+    _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH-70)];
+    _webView.scalesPageToFit = YES;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_webViewUrl]];
     
-    [webView setDelegate:self];
-    [self.view addSubview:webView];
-    [webView loadRequest:request];
+    [_webView setDelegate:self];
+    [self.view addSubview:_webView];
+    [_webView loadRequest:request];
     
+    
+    
+    self.navigationItem.hidesBackButton = YES;
+
+    self.title = _name;
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"清新导航条.png"] forBarMetrics:UIBarMetricsDefault];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回首页" style:(UIBarButtonItemStylePlain) target:self action:@selector(backHomeAction)];
+//    backItem.tintColor = [UIColor orangeColor];
+    
+    self.navigationItem.rightBarButtonItem = backItem;
 }
-// 1.网页开始加载的时候调用
-- (void )webViewDidStartLoad:(UIWebView *)webView{
+- (void)backHomeAction{
     
-    //创建UIActivityIndicatorView背底半透明View
-    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-    [view setTag:108];
-    [view setBackgroundColor:[UIColor blackColor]];
-    [view setAlpha:0.5];
-    [self.view addSubview:view];
-    
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-    [activityIndicator setCenter:view.center];
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [view addSubview:activityIndicator];
-    
-    
-    [activityIndicator startAnimating];
-    
-    
+    [self.navigationController popViewControllerAnimated:YES];
 }
-// 2.网页加载完成的时候调用
-- (void )webViewDidFinishLoad:(UIWebView *)webView{
-    
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
-    
-}
-// 3.网页加载错误的时候调用
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    
-    
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
+- (void)viewWillDisappear:(BOOL)animated{
+
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"好妈妈导航条.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
+-(void)webViewDidStartLoad:(UIWebView *)webView{
+    
+    if (_flag == NO) {
+        [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 50, 50) gifName:@"pika" andShowToView:self.view];
+        _flag = YES;
+    }
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    if (_flag == YES) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        _flag = NO;
+    }
+}
 @end

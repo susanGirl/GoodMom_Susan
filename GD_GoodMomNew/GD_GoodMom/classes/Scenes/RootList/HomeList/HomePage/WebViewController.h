@@ -9,14 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface WebViewController : UIViewController
-{
-    
-    UIWebView *webView;
-    UIActivityIndicatorView *activityIndicator;
-}
+
+@property(strong,nonatomic)UIWebView  *webView;
 @property(strong,nonatomic)NSString  *webViewUrl;
-// 1
-- (void )webViewDidStartLoad:(UIWebView *)webView;// 1.网页开始加载的时候调用
-- (void )webViewDidFinishLoad:(UIWebView *)webView;// 2.网页加载完成的时候调用
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;// 3.网页加载错误的时候调用
+@property(strong,nonatomic)NSString  *name;
+
 @end

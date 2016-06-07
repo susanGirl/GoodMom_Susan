@@ -68,7 +68,7 @@
         [button pop_addAnimation:animation forKey:nil];
         
         // 添加标语
-        UIImageView *sloganView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"publishTitle"]];
+        UIImageView *sloganView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"me-H"]];
         [self.view addSubview:sloganView];
         
         // 标语动画

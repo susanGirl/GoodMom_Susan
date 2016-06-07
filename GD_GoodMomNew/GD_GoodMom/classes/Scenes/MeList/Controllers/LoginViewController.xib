@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
@@ -41,16 +40,18 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入用户名" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="uRB-lr-LPK">
-                            <rect key="frame" x="120" y="200" width="274" height="30"/>
+                            <rect key="frame" x="140" y="200" width="200" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="PqV-fd-pda"/>
+                                <constraint firstAttribute="width" constant="200" id="Xy5-qs-gsz"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="C8M-wd-MHp">
-                            <rect key="frame" x="120" y="260" width="274" height="30"/>
+                            <rect key="frame" x="140" y="260" width="200" height="30"/>
                             <constraints>
+                                <constraint firstAttribute="width" constant="200" id="T6U-st-7AA"/>
                                 <constraint firstAttribute="height" constant="30" id="Wub-AN-OK4"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -80,13 +81,9 @@
                                 <action selector="registerAction:" destination="-1" eventType="touchUpInside" id="oRm-6J-jDh"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="299-Lw-sdc">
-                            <rect key="frame" x="10" y="30" width="30" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="30" id="2v5-V5-a4T"/>
-                                <constraint firstAttribute="height" constant="30" id="O87-d8-dlI"/>
-                            </constraints>
-                            <state key="normal" image="exitNew.png"/>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="299-Lw-sdc">
+                            <rect key="frame" x="35" y="51" width="34" height="32"/>
+                            <state key="normal" image="exit.png"/>
                             <connections>
                                 <action selector="exitAction:" destination="-1" eventType="touchUpInside" id="fcm-pU-hPM"/>
                             </connections>
@@ -95,24 +92,20 @@
                     <color key="backgroundColor" red="1" green="0.81906252079999997" blue="0.85042918609999996" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstItem="C8M-wd-MHp" firstAttribute="leading" secondItem="QHU-yn-cjB" secondAttribute="trailing" constant="10" id="7rJ-1p-1DI"/>
-                        <constraint firstItem="uRB-lr-LPK" firstAttribute="leading" secondItem="rYk-VH-Jky" secondAttribute="trailing" constant="10" id="ECX-Oc-8lf"/>
                         <constraint firstAttribute="trailing" secondItem="5kv-eR-5cW" secondAttribute="trailing" constant="20" id="FsZ-OX-yQV"/>
                         <constraint firstItem="uRB-lr-LPK" firstAttribute="top" secondItem="rYk-VH-Jky" secondAttribute="top" id="GTp-Fx-blo"/>
                         <constraint firstItem="QHU-yn-cjB" firstAttribute="top" secondItem="rYk-VH-Jky" secondAttribute="bottom" constant="30" id="Kni-hx-XZw"/>
                         <constraint firstItem="rYk-VH-Jky" firstAttribute="leading" secondItem="IdF-P3-trR" secondAttribute="leading" constant="30" id="MbK-8W-QXg"/>
+                        <constraint firstItem="uRB-lr-LPK" firstAttribute="leading" secondItem="rYk-VH-Jky" secondAttribute="trailing" constant="30" id="NMd-2F-iI9"/>
                         <constraint firstItem="C8M-wd-MHp" firstAttribute="top" secondItem="QHU-yn-cjB" secondAttribute="top" id="RSY-9c-5NT"/>
-                        <constraint firstAttribute="trailing" secondItem="uRB-lr-LPK" secondAttribute="trailing" constant="20" id="SVv-VC-ne5"/>
-                        <constraint firstItem="299-Lw-sdc" firstAttribute="top" secondItem="IdF-P3-trR" secondAttribute="top" constant="30" id="UHT-Ht-4IT"/>
                         <constraint firstItem="5kv-eR-5cW" firstAttribute="top" secondItem="C8M-wd-MHp" secondAttribute="bottom" constant="50" id="V3n-SQ-Cie"/>
                         <constraint firstItem="CAw-7G-El2" firstAttribute="top" secondItem="5kv-eR-5cW" secondAttribute="bottom" constant="30" id="WHN-0x-dF9"/>
                         <constraint firstItem="rYk-VH-Jky" firstAttribute="top" secondItem="IdF-P3-trR" secondAttribute="top" constant="200" id="bAN-aB-5w3"/>
-                        <constraint firstItem="299-Lw-sdc" firstAttribute="leading" secondItem="IdF-P3-trR" secondAttribute="leading" constant="10" id="dff-se-WK4"/>
                         <constraint firstAttribute="trailing" secondItem="CAw-7G-El2" secondAttribute="trailing" constant="20" id="dki-nA-8Wq"/>
                         <constraint firstItem="CAw-7G-El2" firstAttribute="leading" secondItem="IdF-P3-trR" secondAttribute="leading" constant="20" id="gR1-th-lVQ"/>
                         <constraint firstItem="5kv-eR-5cW" firstAttribute="leading" secondItem="IdF-P3-trR" secondAttribute="leading" constant="20" id="rRd-P8-Ukm"/>
+                        <constraint firstItem="C8M-wd-MHp" firstAttribute="leading" secondItem="QHU-yn-cjB" secondAttribute="trailing" constant="30" id="rYu-Od-IzG"/>
                         <constraint firstItem="QHU-yn-cjB" firstAttribute="leading" secondItem="rYk-VH-Jky" secondAttribute="leading" id="uIh-Nq-RXc"/>
-                        <constraint firstAttribute="trailing" secondItem="C8M-wd-MHp" secondAttribute="trailing" constant="20" id="xjG-YZ-Cha"/>
                     </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="P2y-Ff-0Mn" appends="YES" id="UDb-AE-LMH"/>
@@ -127,7 +120,7 @@
                 <constraint firstAttribute="bottom" secondItem="IdF-P3-trR" secondAttribute="bottom" id="tNn-B9-8Q4"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="344" y="379"/>
+            <point key="canvasLocation" x="341" y="353"/>
         </view>
         <tapGestureRecognizer id="P2y-Ff-0Mn">
             <connections>
@@ -136,6 +129,6 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="exitNew.png" width="24" height="24"/>
+        <image name="exit.png" width="24" height="24"/>
     </resources>
 </document>

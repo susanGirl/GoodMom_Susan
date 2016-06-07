@@ -185,7 +185,6 @@ CGFloat const footViewHeight = 30;
                 cell.textLabel.text = @"清除缓存";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f MB",self.cacheSize];
             }
-
         } else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = @"反馈";
@@ -196,7 +195,6 @@ CGFloat const footViewHeight = 30;
             }
         
     }
-    
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {//夜间模式
         cell.backgroundColor = [UIColor colorWithRed:35/255.0 green:32/255.0 blue:36/255.0 alpha:1.0];
         cell.textLabel.textColor =  [UIColor colorWithRed:111/255.0 green:109/255.0 blue:112/255.0 alpha:1.0];
@@ -229,7 +227,6 @@ CGFloat const footViewHeight = 30;
         [self.navigationController pushViewController:aboutVC animated:YES];
     
     }
-    
     
     
 }

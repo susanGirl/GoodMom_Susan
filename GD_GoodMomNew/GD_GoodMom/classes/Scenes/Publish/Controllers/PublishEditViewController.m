@@ -11,13 +11,12 @@
 #import "AddImagesView.h"
 #import "LoginViewController.h"
 #import <AVOSCloud/AVOSCloud.h>
-#import "MBProgressHUD+gifHUD.h"
 
 
-// 添加照片按钮宽度
+// 相框宽度
 #define kImagesViewW (kScreenW / 6.0)
-// 添加照片按钮高度
-#define kImagesViewH kImagesViewW
+// 相框高度
+#define kImagesViewH (kImagesViewW * 3.0 / 4.0)
 // 相框删除按钮的宽和高
 #define kDeleteButtonW 15
 
@@ -37,20 +36,17 @@
 @property (strong, nonatomic) NSMutableArray *imgViewsArray;
 // 存放头像url
 @property (strong, nonatomic) NSString *avatarURL;
-// 存放帖子图片url的数组
-@property (strong, nonatomic) NSMutableArray *imgURLArray;
 // 要发布帖子的图片在本地的路径
 @property (strong, nonatomic) NSString *totalPath;
 // 要发布的帖子
 @property (strong, nonatomic) AVObject *topic;
+
 
 // 创建UIImagepickerController
 @property (strong, nonatomic) UIImagePickerController *pickerController;
 @end
 
 @implementation PublishEditViewController
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,15 +67,6 @@
     }
     return _imagesArray;
 }
-
-#pragma mark -- 初始化存放帖子图片url的数组 --
-- (NSMutableArray *)imgURLArray {
-    if (!_imgURLArray) {
-        _imgURLArray = [NSMutableArray array];
-    }
-    return _imgURLArray;
-}
-
 #pragma mark -- 添加照片 --
 - (void)setupImagesAction {
     self.addImagesView = [AddImagesView new];
@@ -178,10 +165,8 @@
     }
 
     // 创建相框和添加照片
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self creatImgViewWithImage:image];
-
-    }];
+    [self creatImgViewWithImage:image];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 #pragma mark -- 创建相框和添加照片 --
 
@@ -200,6 +185,10 @@
     [self.imgViewsArray addObject:imgView];
     // 照片添加到数组
     [self.imagesArray addObject:image];
+
+    // 将图片保存到本地
+    [self saveImage:imgView.image withName:[NSString stringWithFormat:@"%@", [NSDate date]]];
+    
     
     // 为每一个相框添加删除按钮
     UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -210,56 +199,25 @@
     [imgView addSubview:deleteButton];
     // 打开用户交互，使删除按钮能够接受点击事件，删除相框。
     imgView.userInteractionEnabled = YES;
- 
-}
-
-#pragma mark -- 获取存放照片url的数组 --
-- (void)saveImagesArray:(NSMutableArray *)imagesArray saveImagesblock:(void(^)(NSArray *imgURLArray))block{
-    
-    __weak PublishEditViewController * weakPublishVC = self;
-    
-    // 收回键盘
-    [weakPublishVC.view endEditing:YES];
-    
-    // 显示缓冲进度条
-    [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 90, 80) gifName:@"pika" andShowToView:weakPublishVC.view];
     
     
-    if (self.imagesArray.count == 0) {
+    
+    // 保存图片url到服务器
+    AVFile *file = [AVFile fileWithName:[NSString stringWithFormat:@"%@", self.topic.createdAt] contentsAtPath:self.totalPath];
+    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         
-        // -- 帖子中只有文字内容 --
-        block(self.imagesArray);
+    } progressBlock:^(NSInteger percentDone) {
         
-    } else {
-        
-        // -- 帖子中有文字内容和图片内容 --
-        for (UIImage * image in imagesArray) {
-            
-            // 将图片保存到本地
-            [self saveImage:image withName:[NSString stringWithFormat:@"%@", [NSDate date]]];
-            // 生产图片url
-            AVFile *file = [AVFile fileWithName:[NSString stringWithFormat:@"%@", self.topic.objectId] contentsAtPath:self.totalPath];
-            [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    [weakPublishVC.imgURLArray addObject:file.url];
-                    if (weakPublishVC.imgURLArray.count == imagesArray.count) {
-                        // 图片url数组中的url数量和图片数量相等时，开始block传值
-                        block(weakPublishVC.imgURLArray);
-                    }
-                }
-            }];
-        }
-    }
+    }];
 
 }
 
-#pragma mark -- 保存要发布的图片到该程序的沙盒内 --
+#pragma mark -- 保存要发布的图片 --
 - (void)saveImage:(UIImage *)tempImage withName:(NSString *)imageName {
     NSData *imageData = UIImagePNGRepresentation(tempImage);
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    // 获取存放图片文件夹的沙盒路径
     self.totalPath = [documentPath stringByAppendingPathComponent:imageName];
-    // 保存图片到沙盒
+    // 保存到document
     [imageData writeToFile:self.totalPath atomically:YES];
 }
 
@@ -287,6 +245,7 @@
 //        [self creatImgViewWithImage:image];
 //    }
 }
+
 
 // 点击取消按钮执行的方法
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -338,65 +297,107 @@
 
 #pragma mark -- 发表 --
 - (void)publishAction {
-
-    __weak PublishEditViewController *weakPublishVC = self;
+    
+    __weak PublishEditViewController *weakSelf = self;
     
     // 点击发表按钮时，先判断登录状态，如果处于已经登录，则直接发表。如果还没有登录，则跳转到登录页面。
+    NSLog(@"%@", [AVUser currentUser]);
+    NSLog(@"%@", [AVUser currentUser].username);
+    NSLog(@"%@", [AVUser currentUser][@"hobby"]);
+    
     // 判断当前用户登陆状态
     if ([AVUser currentUser] && [[AVUser currentUser][@"loginState"] boolValue] == YES) {
-            
-            [self saveImagesArray:_imagesArray saveImagesblock:^(NSArray *imgURLArray) {
-                
-                // 创建存储对象
-                AVObject *topic = [AVObject objectWithClassName:@"Topic"];
-                // 如果当前用户处于登陆状态
-                // 存储帖子内容到服务器
-                
-                [topic setObject:weakPublishVC.textView.text forKey:@"text"]; // 帖子的文字内容
-                [topic setObject:weakPublishVC.topicTitle forKey:@"type"]; // 帖子的类型
-                [topic setObject:[NSNumber numberWithInt:0] forKey:@"commentCount"]; // 帖子的评论人数
-                [topic setObject:[NSNumber numberWithInt:0] forKey:@"collectionCount"]; // 帖子的收藏人数
-                [topic setObject:[NSNumber numberWithInt:0] forKey:@"shareCount"]; // 帖子的分享人数
-                [topic setObject:[AVUser currentUser].username forKey:@"username"]; // 发帖作者的昵称
-                [topic setObject:[AVUser currentUser][@"babyGender"] forKey:@"babyGender"]; // 宝宝性别
-                [topic setObject:[AVUser currentUser][@"babyBirthday"] forKey:@"babyBirthday"]; // 宝宝出生日期
-                
-                // 将帖子图片url数组存储到服务器
-                // 获取存放照片url的数组
-                [topic setObject:imgURLArray forKey:@"images"];
-                
-                // 存储当前作者的头像的url
-                [topic setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
-                weakPublishVC.topic = topic;
-                
-                // 存储到服务器
-                [topic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (succeeded) {
-                        
-                        // 存储成功后结束缓冲进度条
-                        [MBProgressHUD hideHUDForView:weakPublishVC.view animated:YES];
-                        
-                        // 存储成功
-                        NSLog(@"存储成功");
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"发表成功!" preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                            [weakPublishVC dismissViewControllerAnimated:YES completion:nil];
-                        }];
-                        [alertController addAction:okAction];
-                        [weakPublishVC presentViewController:alertController animated:YES completion:nil];
-                    } else {
-                        // 存储失败
-                        NSLog(@"存储失败, 错误代码%@", error);
-                    }
-                }];
-            }];
+        // 如果当前用户处于登陆状态
+        // 存储帖子内容到服务器
+        // 创建存储对象
+        AVObject *topic = [AVObject objectWithClassName:@"Topic"];
+        [topic setObject:self.textView.text forKey:@"text"]; // 帖子的文字内容
+        [topic setObject:self.topicTitle forKey:@"type"]; // 帖子的类型
+        [topic setObject:[NSNumber numberWithInt:0] forKey:@"commentCount"]; // 帖子的评论人数
+        [topic setObject:[NSNumber numberWithInt:0] forKey:@"collectionCount"]; // 帖子的收藏人数
+        [topic setObject:[NSNumber numberWithInt:0] forKey:@"shareCount"]; // 帖子的分享人数
+        [topic setObject:[AVUser currentUser].username forKey:@"username"]; // 发帖作者的昵称
+        [topic setObject:[AVUser currentUser][@"babyGender"] forKey:@"babyGender"]; // 宝宝性别
+        [topic setObject:[AVUser currentUser][@"babyBirthday"] forKey:@"babyBirthday"]; // 宝宝出生日期
         
+        
+        // 查询当前作者的头像的url
+        AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+        [query whereKey:@"name" equalTo:[AVUser currentUser].username];
+        NSArray *objects = [query findObjects];
+        for (AVObject *obj in objects) {
+            self.avatarURL = [obj[@"localData"] objectForKey:@"url"];
+        }
+        [topic setObject:self.avatarURL forKey:@"avatar"]; // 设置用户头像url
+        self.topic = topic;
+        
+        // 存储到服务器
+        [topic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                
+                // 存储成功
+                NSLog(@"存储成功");
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"发表成功!" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                }];
+                [alertController addAction:okAction];
+                [weakSelf presentViewController:alertController animated:YES completion:nil];
+            } else {
+                // 存储失败
+                NSLog(@"存储失败, 错误代码%@", error);
+            }
+        }];
+
     } else {
         // 如果没有用户登陆，即currentUser为空，则跳转到登陆页面
         LoginViewController *loginVC = [LoginViewController new];
         loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:loginVC animated:YES completion:nil];
     }
+    
+    
+    
+//    LoginViewController *loginVC = [LoginViewController new];
+//    loginVC.block = ^(AVUser *user) {
+//        if ([user[@"loginState"] boolValue] == YES) {
+//            
+//            // 存储帖子内容到服务器
+//            // 创建存储对象
+//            AVObject *topic = [AVObject objectWithClassName:@"Topic"];
+//            [topic setObject:self.textView.text forKey:@"text"]; // 帖子的文字内容
+//            [topic setObject:self.imagesArray forKey:@"images"]; // 帖子的图片内容
+//            [topic setObject:self.topicTitle forKey:@"type"]; // 帖子的类型
+//            //    [breedTopic setObject:@"挺好的帖子" forKey:@"comment"]; // 帖子的评论
+//            [topic setObject:[NSNumber numberWithInt:5] forKey:@"commentCount"]; // 帖子的评论人数
+//            [topic setObject:[NSNumber numberWithInt:16] forKey:@"collectionCount"]; // 帖子的收藏人数
+//            [topic setObject:[NSNumber numberWithInt:38] forKey:@"shareCount"]; // 帖子的分享人数
+//            [topic setObject:user.username forKey:@"username"]; // 发帖作者的昵称
+//            // 存储
+//            [topic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                if (succeeded) {
+//                    // 存储成功
+//                    NSLog(@"存储成功");
+//                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"发表成功!" preferredStyle:UIAlertControllerStyleAlert];
+//                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+//                    }];
+//                    [alertController addAction:okAction];
+//                    [weakSelf presentViewController:alertController animated:YES completion:nil];
+//                } else {
+//                    // 存储失败
+//                    NSLog(@"存储失败, 错误代码%@", error);
+//                }
+//            }];
+//        } else {
+//            // 如果还未登陆，则跳转到登陆页面
+//        }
+//        
+//    };
+//    loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//    [self presentViewController:loginVC animated:YES completion:nil];
+    
+
 
 }
 
