@@ -8,6 +8,11 @@
 
 #import "AppDelegate.h"
 #import "RootViewController.h"
+#import <UMSocial.h>
+#import <UMSocialWechatHandler.h>
+#import <UMSocialQQHandler.h>
+#import <UMSocialSinaSSOHandler.h>
+
 @interface AppDelegate ()
 
 @end
@@ -31,6 +36,26 @@
                       clientKey:@"tSNO0iEHsWlfootq1PXaxHwR"];
     // 跟踪统计应用的打开情况
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+#pragma mark -- 友盟分享配置 --
+    //设置友盟社会化组件appkey
+    [UMSocialData setAppKey:@"5750db84e0f55a2afc00017a"];
+    
+    // -- 配置第三方平台APPID和scheme
+    //设置微信AppId、appSecret，分享url
+    // 使用我的的账号申请的AppId和appkey(审核通过）
+    [UMSocialWechatHandler setWXAppId:@"wx743f18e48f8823af" appSecret:@"a3f2e30faa4f6f292278230144c90189" url:@"http://www.umeng.com/social"];
+    //设置手机QQ 的AppId，Appkey，和分享URL，需要#import "UMSocialQQHandler.h"
+    // 使用温哲的账号申请的AppId和appkey(审核通过）
+    [UMSocialQQHandler setQQWithAppId:@"1105375573" appKey:@"mX4pi78e26z6HrY5" url:@"http://www.umeng.com/social"];
+    //打开新浪微博的SSO开关，设置新浪微博回调地址，这里必须要和你在新浪微博后台设置的回调地址一致。需要 #import "UMSocialSinaSSOHandler.h"
+    // 使用我的账号申请的AppId和appkey(审核中）
+    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"2737207096"
+                                              secret:@"57dd636af966efda7030cc6568c3d8bb"
+                                         RedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    
+    //设置支持没有客户端情况下使用SSO授权
+    [UMSocialQQHandler setSupportWebView:YES];
     
     
     return YES;
@@ -58,4 +83,13 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark --  配置系统回调(友盟分享） --
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url];
+    if (result == FALSE) {
+        //调用其他SDK，例如支付宝SDK等
+    }
+    return result;
+}
 @end

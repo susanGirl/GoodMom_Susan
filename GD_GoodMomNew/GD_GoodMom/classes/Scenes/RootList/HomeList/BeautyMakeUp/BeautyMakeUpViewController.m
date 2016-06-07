@@ -8,13 +8,10 @@
 
 #import "BeautyMakeUpViewController.h"
 #import "NetWorking.h"
-#import <MJRefresh.h>
-#import "MakeUpCell.h"
-#import "WebViewController.h"
 @interface BeautyMakeUpViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
-@property (strong, nonatomic)  UIScrollView *bannerScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *bannerScrollView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property(strong,nonatomic)NSString  *cellTitle;
+
 
 
 
@@ -39,84 +36,55 @@
 @property(strong,nonatomic)NSMutableDictionary  *dict;
 
 
-
-
 @end
 
 
 
 
-//static NSString * const cellType_1 = @"cellType_1_identifier";
-//static NSString * const cellType_2 = @"cellType_2_identifier";
-//static NSString * const cellType_3 = @"cellType_3_identifier";
-//static NSString * const cellType_4 = @"cellType_4_identifier";
-//static NSString * const cellType_7 = @"cellType_7_identifier";
-
-static NSString * const makeUpId = @"makeUpIdentifier";
+static NSString * const cellType_1 = @"cellType_1_identifier";
+static NSString * const cellType_2 = @"cellType_2_identifier";
+static NSString * const cellType_3 = @"cellType_3_identifier";
+static NSString * const cellType_4 = @"cellType_4_identifier";
+static NSString * const cellType_7 = @"cellType_7_identifier";
 @implementation BeautyMakeUpViewController
 
 #define POST_YUN_URL @"http://api.miyabaobei.com/channel/template/"
 #define POST_YUN_BODY @"sign=2df6d5bc1e7277833a0693817db7ec57&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464607138615&app_id=android_app_id&timestamp=1464607584&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=GxskbDxPn56EtwBwjy_i3HJQ9Utthkf3bcLB31BpWcu169zVWk6u61za7X9kjhmp9X6wRpp9eZ6-TL63lEMYShuo2bBweWlPTzZNHUiCOJ-IgBlYpmSBS1y19szSUgJD1Xy1YHnkPJWBUAIHkqx_Upo7jfFEu0njDqNiAdoTaqM%3D&"
 
 - (void)viewWillAppear:(BOOL)animated{
-//    _listArray = [NSMutableArray array];
-//    _modulesArray = [NSMutableArray array];
-//    _dataArray = [NSMutableArray array];
-//    _picArray = [NSMutableArray array];
-//    _typeArray = [NSMutableArray array];
-//    _outlets_infosArray = [NSMutableArray array];
-//    _outlet_itemsArray = [NSMutableArray array];
-//    _image_indexArray = [NSMutableArray array];
-//    _dict = [NSMutableDictionary dictionary];
-    
+        _listArray = [NSMutableArray array];
+        _modulesArray = [NSMutableArray array];
+        _dataArray = [NSMutableArray array];
+        _picArray = [NSMutableArray array];
+        _typeArray = [NSMutableArray array];
+        _outlets_infosArray = [NSMutableArray array];
+        _outlet_itemsArray = [NSMutableArray array];
+        _image_indexArray = [NSMutableArray array];
+        _dict = [NSMutableDictionary dictionary];
+
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    _bannerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, kScreenW*5/8)];
-    _tableView.tableHeaderView = _bannerScrollView;
+    
     // 设置代理
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     // 注册cell
  
-    [_tableView registerNib:[UINib nibWithNibName:@"MakeUpCell" bundle:nil] forCellReuseIdentifier:makeUpId];
-    /*
     [_tableView registerNib:[UINib nibWithNibName:@"CellType_1" bundle:nil] forCellReuseIdentifier:cellType_1];
     [_tableView registerNib:[UINib nibWithNibName:@"CellType_2" bundle:nil] forCellReuseIdentifier:cellType_2];
     [_tableView registerNib:[UINib nibWithNibName:@"CellType_3" bundle:nil] forCellReuseIdentifier:cellType_3];
     [_tableView registerNib:[UINib nibWithNibName:@"CellType_4" bundle:nil] forCellReuseIdentifier:cellType_4];
     [_tableView registerNib:[UINib nibWithNibName:@"CellType_7" bundle:nil] forCellReuseIdentifier:cellType_7];
     
-    */
+    
     [self netWorkingAndSetUp];
-//    [self netWorkingWithTableView];
+    [self netWorkingWithTableView];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    // 下拉刷新
-    [self setupRefresh];
-}
-#pragma mark -- 下拉刷新、上拉加载 --
-- (void)setupRefresh {
-    
-    // 下拉刷新
-    // 下拉后，开始网络请求
-//    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestTopics)];
-    // 改变下拉控件的透明度（根据拖拽比例切换透明度）
-    self.tableView.mj_header.automaticallyChangeAlpha = YES;
-    // 开始刷新
-    [self.tableView.mj_header beginRefreshing];
-    
 }
 
-#pragma mark -- 刷新数据 --
-- (void)reloadAllData {
-    [self.tableView reloadData];
-    // 停止下拉刷新
-    [self.tableView.mj_header endRefreshing];
-    // 隐藏缓冲进度条
-//    [MBProgressHUD hideHUDForView:self.tableView animated:YES];
-}
 #pragma mark -- 美妆
 #pragma mark --轮播图
 // 解析数据并画图赋值
@@ -124,7 +92,7 @@ static NSString * const makeUpId = @"makeUpIdentifier";
     
     self.post_Url = @"http://api.miyabaobei.com/channel/banner/";
     self.post_Body = @"sign=a21a6937493989269690c13657b1d766&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464607138615&app_id=android_app_id&timestamp=1464607584&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=HpaW3Q7OetoZ1gy-YVpAbObC5HIBu-McD7lpKE0JUcXAqv3mtGbGwhL6AFZ1wsjIHqGEMIZ8fIoGv2dyGV3I2uKQcZ7i-hVpOFLgtWutsIoOU34vzO84MEMUl_1pr9A-ani3uOxu8Kc9yyRQvopYGPB6zdYQPgDy8pndeekcbZw%3D&";
-    __weak BeautyMakeUpViewController *beautyVC = self;
+    
     [NetWorking netWorkingPostActionWithURLString:self.post_Url bodyURLString:self.post_Body completeHandle:^(NSData * _Nullable data) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
         
@@ -133,7 +101,6 @@ static NSString * const makeUpId = @"makeUpIdentifier";
             [tempArray addObject:banner];
         }
         self.imagesArray = [NSMutableArray array];
-        
         for (int i = 0; i < tempArray.count; i++) {
             
             NSString *imgUrlString = tempArray[i][@"image"];
@@ -141,21 +108,8 @@ static NSString * const makeUpId = @"makeUpIdentifier";
         }
 //        NSLog(@"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️美妆-->解析");
         _count = self.imagesArray.count;
-
-        if (_imagesArray.count == 1) {
-            
-            UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(self.bannerScrollView.frame), kScreenW, CGRectGetMaxY(self.bannerScrollView.frame))];
-            [imgView sd_setImageWithURL:[NSURL URLWithString:self.imagesArray[0]]];
-            [self.bannerScrollView addSubview:imgView];
-            _bannerScrollView.contentSize = CGSizeMake(kScreenW, self.bannerScrollView.frame.size.height);
-            [_timer invalidate];
-        }else{
-            [self drawView];
-        }
-        // 回到主线程，刷新列表
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [beautyVC reloadAllData];
-        });
+//        NSLog(@"%ld",_count);
+        [self drawView];
     }];
     
     
@@ -168,14 +122,12 @@ static NSString * const makeUpId = @"makeUpIdentifier";
     self.bannerScrollView.contentSize = CGSizeMake(kScreenW*self.imagesArray.count, self.bannerScrollView.frame.size.height);
     
     _bannerScrollView.delegate =self;
-    
-        for (int i = 0; i < _count; i++) {
-            UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenW*i, CGRectGetMinY(self.bannerScrollView.frame), kScreenW, CGRectGetMaxY(self.bannerScrollView.frame))];
-            [imgView sd_setImageWithURL:[NSURL URLWithString:self.imagesArray[i]]];
-            
-            [self.bannerScrollView addSubview:imgView];
-        }
-    
+    for (int i = 0; i < _count; i++) {
+        UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenW*i, CGRectGetMinY(self.bannerScrollView.frame), kScreenW, CGRectGetMaxY(self.bannerScrollView.frame))];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:self.imagesArray[i]]];
+        
+        [self.bannerScrollView addSubview:imgView];
+    }
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, self.imagesArray.count * 15, 50)];
     _pageControl.center = CGPointMake(self.view.center.x, CGRectGetMaxY(_bannerScrollView.frame)-25);
     _pageControl.numberOfPages = self.imagesArray.count;
@@ -204,7 +156,7 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 
 #pragma mark --tableView
 - (void)netWorkingWithTableView{
-    __weak BeautyMakeUpViewController *beautyVC = self;
+    
     [NetWorking netWorkingPostActionWithURLString:POST_YUN_URL bodyURLString:POST_YUN_BODY completeHandle:^(NSData * _Nullable data) {
         
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -223,7 +175,7 @@ static NSString * const makeUpId = @"makeUpIdentifier";
         //        }
         dispatch_async(dispatch_get_main_queue(), ^{
             // 回到主线程-->切记刷新-->刷新UI
-            [beautyVC reloadAllData];
+            [self.tableView reloadData];
         });
         
     }];
@@ -263,11 +215,10 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     //    NSLog(@"%ld-🔥🔥🔥%ld",self.listArray.count,_outlets_infosArray.count);
-//    return self.listArray.count;//+self.outlets_infosArray.count;
-    return 6;
+    return self.listArray.count;//+self.outlets_infosArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    /*
+    
     NSMutableArray *modulesArray = [NSMutableArray array];
     NSMutableArray *typeArray = [NSMutableArray array];
     if (section < self.listArray.count) {
@@ -295,27 +246,14 @@ static NSString * const makeUpId = @"makeUpIdentifier";
         //        NSLog(@"-💧💧%ld💧->",section);
         return 2;
     }
-     */
     
-    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MakeUpCell *cell = [_tableView dequeueReusableCellWithIdentifier:makeUpId];
-    if (indexPath.section == 0) {
-        [cell name:@"防晒1.png" name:@"防晒2.png" name:@"防晒3.png"];
-    }else if(indexPath.section == 1){
-        [cell name:@"护发1.png" name:@"护发2.png" name:@"护发3.png"];
-    }else if(indexPath.section == 2){
-        [cell name:@"廋身1.png" name:@"廋身2.png" name:@"廋身3.png"];
-    }else if(indexPath.section == 3){
-        [cell name:@"面膜1.png" name:@"面膜2.png" name:@"面膜3.png"];
-    }else if(indexPath.section == 4){
-        [cell name:@"包包1.png" name:@"包包2.png" name:@"包包3.png"];
-    }else {
-        [cell name:@"巾纸1.png" name:@"巾纸2.png" name:@"巾纸3.png"];
-    }
-    return cell ;
+    
+    UITableViewCell *cell = [self index:indexPath tableView:tableView];
+    
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -332,54 +270,7 @@ static NSString * const makeUpId = @"makeUpIdentifier";
 //        }
 //        return kScreenWidth/2;
 //    }
-    return kScreenW/3;
-}
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSLog(@"aaaa");
-    
-    
-    if (indexPath.section == 0) {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=175"];
-    }else if (indexPath.section == 1) {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=222"];
-    }else if (indexPath.section == 2) {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=210"];
-    }else if (indexPath.section == 3) {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=197"];
-    }else if (indexPath.section == 4) {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=303"];
-    }else {
-        [self pushWebView:@"http://www.mia.com/search/s?cat=270"];
-    }
-}
-- (void)pushWebView:(NSString *)url{
-    
-    WebViewController *webViewVC = [WebViewController new];
-    
-    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
-    
-    webViewVC.webViewUrl = url;
-    
-    [self.navigationController pushViewController:webViewVC animated:YES];
-}
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        _cellTitle = @"防晒/隔离";
-    }else if (section == 1){
-        _cellTitle = @"洗发护发";
-    }else if (section == 2){
-        _cellTitle = @"美体塑身";
-    }else if (section == 3){
-        _cellTitle = @"面膜";
-    }else if (section == 4){
-        _cellTitle = @"包包";
-    }else{
-        _cellTitle = @"卫生巾";
-    }
-    return _cellTitle;
+    return kScreenW/2;
 }
 // 绘制tableViewCell时调用的私有方法
 
@@ -398,7 +289,6 @@ static NSString * const makeUpId = @"makeUpIdentifier";
  *
  *  @return 当前cell样式
  */
-/*
 - (UITableViewCell *)index:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
     //==========
     if (indexPath.section < self.listArray.count) {
@@ -559,5 +449,5 @@ static NSString * const makeUpId = @"makeUpIdentifier";
     
     return 0;
 }
-*/
+
 @end;

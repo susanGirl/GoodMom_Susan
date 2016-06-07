@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AboutViewController">
             <connections>
                 <outlet property="searchDisplayController" destination="rHW-cq-bKM" id="xvR-9S-RMJ"/>
+                <outlet property="textView" destination="f3F-m3-muE" id="LAa-f7-Ege"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

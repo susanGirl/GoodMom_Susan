@@ -30,7 +30,7 @@
 // 帖子的类型
 @property (strong, nonatomic) NSString *type;
 // 帖子的评论
-@property (strong, nonatomic) NSString *comment;
+@property (strong, nonatomic) NSMutableArray *commentsArray;
 // 帖子的评论数量
 @property (assign, nonatomic) NSInteger commentCount;
 // 收藏帖子的人数

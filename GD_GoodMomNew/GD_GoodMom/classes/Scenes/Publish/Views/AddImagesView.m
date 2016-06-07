@@ -15,7 +15,7 @@
 // 相框宽度
 #define kImagesViewW (kScreenW / 6.0)
 // 相框高度
-#define kImagesViewH (kImagesViewW * 3.0 / 4.0)
+#define kImagesViewH kImagesViewW
 
 @interface AddImagesView ()
 

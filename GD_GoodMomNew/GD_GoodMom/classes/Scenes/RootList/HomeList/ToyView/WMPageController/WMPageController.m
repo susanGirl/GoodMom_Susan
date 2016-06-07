@@ -157,8 +157,7 @@
 }
 
 - (void)addMenuView {
-    // 导航高度
-    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.menuHeight);
+    CGRect frame = CGRectMake(0, 20.0, self.view.frame.size.width, self.menuHeight);
     WMMenuView *menuView = [[WMMenuView alloc] initWithFrame:frame buttonItems:self.titles backgroundColor:self.menuBGColor norSize:self.titleSizeNormal selSize:self.titleSizeSelected norColor:self.titleColorNormal selColor:self.titleColorSelected];
     menuView.delegate = self;
     menuView.style = self.menuViewStyle;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,114 +7,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChildClothesViewController">
             <connections>
-                <outlet property="view" destination="iN0-l3-epB" id="QRb-lE-5oK"/>
+                <outlet property="view" destination="iN0-l3-epB" id="ztQ-QL-4zM"/>
+                <outlet property="webView" destination="THW-hs-wSn" id="pWH-ab-KH0"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="精彩活动.png" translatesAutoresizingMaskIntoConstraints="NO" id="7jm-3G-sSA">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="A7D-kc-Vaw"/>
-                    </constraints>
-                </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOb-0h-kmR">
-                    <rect key="frame" x="211" y="88" width="195" height="208"/>
-                    <state key="normal" backgroundImage="0-12岁配饰.png"/>
-                    <connections>
-                        <action selector="button_2:" destination="-1" eventType="touchUpInside" id="XBY-gK-fk7"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVS-pA-QoQ">
-                    <rect key="frame" x="8" y="304" width="195" height="208"/>
-                    <state key="normal" backgroundImage="0-3岁爬服.png"/>
-                    <connections>
-                        <action selector="button_3:" destination="-1" eventType="touchUpInside" id="DCE-g2-LCD"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6cU-pL-zUK">
-                    <rect key="frame" x="211" y="304" width="195" height="208"/>
-                    <state key="normal" backgroundImage="0-3岁婴装.png"/>
-                    <connections>
-                        <action selector="button_4:" destination="-1" eventType="touchUpInside" id="bM9-OK-Hd6"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AoM-jW-W8f">
-                    <rect key="frame" x="8" y="520" width="195" height="208"/>
-                    <state key="normal" backgroundImage="0-12岁连衣裙.png"/>
-                    <connections>
-                        <action selector="button_5:" destination="-1" eventType="touchUpInside" id="8hv-kf-osg"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wlU-7V-QqD">
-                    <rect key="frame" x="211" y="520" width="195" height="208"/>
-                    <state key="normal" backgroundImage="0-12岁套装.png"/>
-                    <connections>
-                        <action selector="button_6:" destination="-1" eventType="touchUpInside" id="kLY-RE-WST"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L2y-X5-vBu">
-                    <rect key="frame" x="8" y="88" width="195" height="208"/>
-                    <state key="normal" backgroundImage="3-12岁专场.png"/>
-                    <connections>
-                        <action selector="button_1:" destination="-1" eventType="touchUpInside" id="21J-o1-aKW"/>
-                    </connections>
-                </button>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THW-hs-wSn">
+                    <rect key="frame" x="0.0" y="30" width="600" height="570"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                </webView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="L2y-X5-vBu" firstAttribute="top" secondItem="7jm-3G-sSA" secondAttribute="bottom" constant="8" id="0sy-5f-9bs"/>
-                <constraint firstItem="hVS-pA-QoQ" firstAttribute="height" secondItem="L2y-X5-vBu" secondAttribute="height" id="1wV-E6-Btp"/>
-                <constraint firstItem="7jm-3G-sSA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2pf-nD-0PS"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="leading" secondItem="AoM-jW-W8f" secondAttribute="trailing" constant="8" id="5Rx-GO-Av1"/>
-                <constraint firstAttribute="trailing" secondItem="LOb-0h-kmR" secondAttribute="trailing" constant="8" id="6bH-id-2B9"/>
-                <constraint firstAttribute="bottom" secondItem="wlU-7V-QqD" secondAttribute="bottom" constant="8" id="8Bb-ul-t3c"/>
-                <constraint firstItem="hVS-pA-QoQ" firstAttribute="top" secondItem="L2y-X5-vBu" secondAttribute="bottom" constant="8" id="8UJ-La-OdG"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="top" secondItem="6cU-pL-zUK" secondAttribute="bottom" constant="8" id="A8d-TQ-3Gt"/>
-                <constraint firstItem="hVS-pA-QoQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Avp-np-9Su"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="height" secondItem="AoM-jW-W8f" secondAttribute="height" id="Cn7-8R-P8N"/>
-                <constraint firstAttribute="trailing" secondItem="6cU-pL-zUK" secondAttribute="trailing" constant="8" id="Ffk-9e-y6T"/>
-                <constraint firstItem="LOb-0h-kmR" firstAttribute="leading" secondItem="L2y-X5-vBu" secondAttribute="trailing" constant="8" id="LrQ-xp-teb"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="width" secondItem="AoM-jW-W8f" secondAttribute="width" id="MO2-d1-Xdj"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="top" secondItem="LOb-0h-kmR" secondAttribute="bottom" constant="8" id="PTs-gg-XIU"/>
-                <constraint firstAttribute="trailing" secondItem="wlU-7V-QqD" secondAttribute="trailing" constant="8" id="Qkr-IG-Ghq"/>
-                <constraint firstItem="AoM-jW-W8f" firstAttribute="height" secondItem="hVS-pA-QoQ" secondAttribute="height" id="TIl-Zb-Qhc"/>
-                <constraint firstItem="7jm-3G-sSA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UJA-Pd-Lag"/>
-                <constraint firstItem="AoM-jW-W8f" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="W0X-nR-UiC"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="top" secondItem="LOb-0h-kmR" secondAttribute="bottom" constant="8" id="WYa-O2-cRP"/>
-                <constraint firstItem="AoM-jW-W8f" firstAttribute="width" secondItem="hVS-pA-QoQ" secondAttribute="width" id="YXU-9n-Khl"/>
-                <constraint firstAttribute="trailing" secondItem="7jm-3G-sSA" secondAttribute="trailing" id="Yd4-lb-cNK"/>
-                <constraint firstItem="AoM-jW-W8f" firstAttribute="top" secondItem="hVS-pA-QoQ" secondAttribute="bottom" constant="8" id="cT0-sh-FEB"/>
-                <constraint firstItem="LOb-0h-kmR" firstAttribute="leading" secondItem="L2y-X5-vBu" secondAttribute="trailing" constant="8" id="e4d-PB-gmf"/>
-                <constraint firstItem="L2y-X5-vBu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="hFn-uy-3Jo"/>
-                <constraint firstItem="LOb-0h-kmR" firstAttribute="top" secondItem="7jm-3G-sSA" secondAttribute="bottom" constant="8" id="hSI-EH-2Sw"/>
-                <constraint firstAttribute="bottom" secondItem="AoM-jW-W8f" secondAttribute="bottom" constant="8" id="hao-WD-2zQ"/>
-                <constraint firstItem="LOb-0h-kmR" firstAttribute="height" secondItem="L2y-X5-vBu" secondAttribute="height" id="lRc-F1-Zzm"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="leading" secondItem="hVS-pA-QoQ" secondAttribute="trailing" constant="8" id="qIj-df-Ix1"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="leading" secondItem="AoM-jW-W8f" secondAttribute="trailing" constant="8" id="rDo-il-ptI"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="width" secondItem="hVS-pA-QoQ" secondAttribute="width" id="rz1-u0-tbn"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="leading" secondItem="hVS-pA-QoQ" secondAttribute="trailing" constant="8" id="tht-tx-qeM"/>
-                <constraint firstItem="LOb-0h-kmR" firstAttribute="width" secondItem="L2y-X5-vBu" secondAttribute="width" id="tvq-Wx-7wm"/>
-                <constraint firstItem="wlU-7V-QqD" firstAttribute="top" secondItem="6cU-pL-zUK" secondAttribute="bottom" constant="8" id="u7U-D5-qHz"/>
-                <constraint firstItem="6cU-pL-zUK" firstAttribute="height" secondItem="hVS-pA-QoQ" secondAttribute="height" id="vqu-rR-lMW"/>
-                <constraint firstItem="hVS-pA-QoQ" firstAttribute="top" secondItem="L2y-X5-vBu" secondAttribute="bottom" constant="8" id="waH-If-ok2"/>
-                <constraint firstItem="AoM-jW-W8f" firstAttribute="top" secondItem="hVS-pA-QoQ" secondAttribute="bottom" constant="8" id="z0n-7n-J7X"/>
-                <constraint firstItem="hVS-pA-QoQ" firstAttribute="width" secondItem="L2y-X5-vBu" secondAttribute="width" id="zLj-l6-36Q"/>
+                <constraint firstAttribute="trailing" secondItem="THW-hs-wSn" secondAttribute="trailing" id="2ux-JM-rxx"/>
+                <constraint firstAttribute="bottom" secondItem="THW-hs-wSn" secondAttribute="bottom" id="EAd-e0-vfn"/>
+                <constraint firstItem="THW-hs-wSn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="q00-T1-Smr"/>
+                <constraint firstItem="THW-hs-wSn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="sah-Hd-kAU"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="203" y="384"/>
+            <point key="canvasLocation" x="135" y="361"/>
         </view>
     </objects>
-    <resources>
-        <image name="0-12岁套装.png" width="482" height="412"/>
-        <image name="0-12岁连衣裙.png" width="481" height="411"/>
-        <image name="0-12岁配饰.png" width="485" height="413"/>
-        <image name="0-3岁婴装.png" width="482" height="409"/>
-        <image name="0-3岁爬服.png" width="482" height="411"/>
-        <image name="3-12岁专场.png" width="483" height="413"/>
-        <image name="精彩活动.png" width="998" height="123"/>
-    </resources>
 </document>

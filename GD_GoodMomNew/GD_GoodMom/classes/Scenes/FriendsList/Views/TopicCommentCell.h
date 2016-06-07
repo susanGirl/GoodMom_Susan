@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Topic.h"
+#import "Comment.h"
 
 @interface TopicCommentCell : UITableViewCell
-@property (strong, nonatomic) Topic *topic;
+
+@property (strong, nonatomic) Comment *comment;
+// 计算cell高度
+- (CGFloat)calculateCellHeight;
 @end

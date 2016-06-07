@@ -80,7 +80,7 @@
     WMPageController *homeVC = [[WMPageController alloc] initWithViewControllerClasses:homeVCs andTheirTitles:homeVCTitles];
     HomeListViewController *homeNav =  [[HomeListViewController alloc] initWithRootViewController:homeVC];
     
-//    [homeVC.navigationController setNavigationBarHidden:YES];// 隐藏NavigationBar
+    [homeVC.navigationController setNavigationBarHidden:YES];// 隐藏NavigationBar
     homeVC.menuViewStyle = WMMenuViewStyleLine;
     homeVC.menuItemWidth = 66;
     homeVC.titleColorNormal = kTitlesNormalColor;
