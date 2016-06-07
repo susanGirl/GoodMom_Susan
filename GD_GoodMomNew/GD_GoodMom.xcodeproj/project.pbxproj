@@ -267,6 +267,24 @@
 		C2D22E1E1CF73123002F1F36 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E1C1CF73123002F1F36 /* AboutViewController.m */; };
 		C2D22E1F1CF73123002F1F36 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2D22E1D1CF73123002F1F36 /* AboutViewController.xib */; };
 		C2D22E221CF738F3002F1F36 /* imageNetWork.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D22E211CF738F3002F1F36 /* imageNetWork.m */; };
+		C2DDD3D11D065E1600ED2DC8 /* Knowledge.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3D01D065E1600ED2DC8 /* Knowledge.plist */; };
+		C2DDD3D61D065E2D00ED2DC8 /* KnowledgeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3D31D065E2D00ED2DC8 /* KnowledgeModel.m */; };
+		C2DDD3D71D065E2D00ED2DC8 /* KnowTitleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3D51D065E2D00ED2DC8 /* KnowTitleModel.m */; };
+		C2DDD3E21D065E3C00ED2DC8 /* HRScorollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3D91D065E3C00ED2DC8 /* HRScorollView.m */; };
+		C2DDD3E31D065E3C00ED2DC8 /* KnowDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3DB1D065E3C00ED2DC8 /* KnowDetailCell.m */; };
+		C2DDD3E41D065E3C00ED2DC8 /* KnowDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3DC1D065E3C00ED2DC8 /* KnowDetailCell.xib */; };
+		C2DDD3E51D065E3C00ED2DC8 /* KnowledgeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3DE1D065E3C00ED2DC8 /* KnowledgeCell.m */; };
+		C2DDD3E61D065E3C00ED2DC8 /* KnowledgeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3DF1D065E3C00ED2DC8 /* KnowledgeCell.xib */; };
+		C2DDD3E71D065E3C00ED2DC8 /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3E11D065E3C00ED2DC8 /* MyView.m */; };
+		C2DDD3F01D065E4F00ED2DC8 /* KnowDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3E91D065E4F00ED2DC8 /* KnowDetailViewController.m */; };
+		C2DDD3F11D065E4F00ED2DC8 /* KnowledgeController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3EB1D065E4F00ED2DC8 /* KnowledgeController.m */; };
+		C2DDD3F21D065E4F00ED2DC8 /* KnowTitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3ED1D065E4F00ED2DC8 /* KnowTitleViewController.m */; };
+		C2DDD3F31D065E4F00ED2DC8 /* WebsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDD3EF1D065E4F00ED2DC8 /* WebsViewController.m */; };
+		C2DDD3F91D065F4A00ED2DC8 /* 11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3F41D065F4A00ED2DC8 /* 11.jpg */; };
+		C2DDD3FA1D065F4A00ED2DC8 /* 12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3F51D065F4A00ED2DC8 /* 12.jpg */; };
+		C2DDD3FB1D065F4A00ED2DC8 /* 13.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3F61D065F4A00ED2DC8 /* 13.jpg */; };
+		C2DDD3FC1D065F4A00ED2DC8 /* 14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3F71D065F4A00ED2DC8 /* 14.jpg */; };
+		C2DDD3FD1D065F4A00ED2DC8 /* 15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C2DDD3F81D065F4A00ED2DC8 /* 15.jpg */; };
 		C2E82C941D00550B005F670F /* 精彩活动.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E82C8D1D00550B005F670F /* 精彩活动.png */; };
 		C2E82C951D00550B005F670F /* 0-3岁爬服.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E82C8E1D00550B005F670F /* 0-3岁爬服.png */; };
 		C2E82C961D00550B005F670F /* 0-3岁婴装.png in Resources */ = {isa = PBXBuildFile; fileRef = C2E82C8F1D00550B005F670F /* 0-3岁婴装.png */; };
@@ -699,6 +717,34 @@
 		C2D22E1D1CF73123002F1F36 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		C2D22E201CF738F3002F1F36 /* imageNetWork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageNetWork.h; sourceTree = "<group>"; };
 		C2D22E211CF738F3002F1F36 /* imageNetWork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = imageNetWork.m; sourceTree = "<group>"; };
+		C2DDD3D01D065E1600ED2DC8 /* Knowledge.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Knowledge.plist; sourceTree = "<group>"; };
+		C2DDD3D21D065E2D00ED2DC8 /* KnowledgeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeModel.h; sourceTree = "<group>"; };
+		C2DDD3D31D065E2D00ED2DC8 /* KnowledgeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeModel.m; sourceTree = "<group>"; };
+		C2DDD3D41D065E2D00ED2DC8 /* KnowTitleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowTitleModel.h; sourceTree = "<group>"; };
+		C2DDD3D51D065E2D00ED2DC8 /* KnowTitleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowTitleModel.m; sourceTree = "<group>"; };
+		C2DDD3D81D065E3C00ED2DC8 /* HRScorollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRScorollView.h; sourceTree = "<group>"; };
+		C2DDD3D91D065E3C00ED2DC8 /* HRScorollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRScorollView.m; sourceTree = "<group>"; };
+		C2DDD3DA1D065E3C00ED2DC8 /* KnowDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowDetailCell.h; sourceTree = "<group>"; };
+		C2DDD3DB1D065E3C00ED2DC8 /* KnowDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowDetailCell.m; sourceTree = "<group>"; };
+		C2DDD3DC1D065E3C00ED2DC8 /* KnowDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KnowDetailCell.xib; sourceTree = "<group>"; };
+		C2DDD3DD1D065E3C00ED2DC8 /* KnowledgeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeCell.h; sourceTree = "<group>"; };
+		C2DDD3DE1D065E3C00ED2DC8 /* KnowledgeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeCell.m; sourceTree = "<group>"; };
+		C2DDD3DF1D065E3C00ED2DC8 /* KnowledgeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KnowledgeCell.xib; sourceTree = "<group>"; };
+		C2DDD3E01D065E3C00ED2DC8 /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
+		C2DDD3E11D065E3C00ED2DC8 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
+		C2DDD3E81D065E4F00ED2DC8 /* KnowDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowDetailViewController.h; sourceTree = "<group>"; };
+		C2DDD3E91D065E4F00ED2DC8 /* KnowDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowDetailViewController.m; sourceTree = "<group>"; };
+		C2DDD3EA1D065E4F00ED2DC8 /* KnowledgeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowledgeController.h; sourceTree = "<group>"; };
+		C2DDD3EB1D065E4F00ED2DC8 /* KnowledgeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowledgeController.m; sourceTree = "<group>"; };
+		C2DDD3EC1D065E4F00ED2DC8 /* KnowTitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KnowTitleViewController.h; sourceTree = "<group>"; };
+		C2DDD3ED1D065E4F00ED2DC8 /* KnowTitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KnowTitleViewController.m; sourceTree = "<group>"; };
+		C2DDD3EE1D065E4F00ED2DC8 /* WebsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebsViewController.h; sourceTree = "<group>"; };
+		C2DDD3EF1D065E4F00ED2DC8 /* WebsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebsViewController.m; sourceTree = "<group>"; };
+		C2DDD3F41D065F4A00ED2DC8 /* 11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 11.jpg; sourceTree = "<group>"; };
+		C2DDD3F51D065F4A00ED2DC8 /* 12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 12.jpg; sourceTree = "<group>"; };
+		C2DDD3F61D065F4A00ED2DC8 /* 13.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 13.jpg; sourceTree = "<group>"; };
+		C2DDD3F71D065F4A00ED2DC8 /* 14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 14.jpg; sourceTree = "<group>"; };
+		C2DDD3F81D065F4A00ED2DC8 /* 15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 15.jpg; sourceTree = "<group>"; };
 		C2E82C8D1D00550B005F670F /* 精彩活动.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "精彩活动.png"; sourceTree = "<group>"; };
 		C2E82C8E1D00550B005F670F /* 0-3岁爬服.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0-3岁爬服.png"; sourceTree = "<group>"; };
 		C2E82C8F1D00550B005F670F /* 0-3岁婴装.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0-3岁婴装.png"; sourceTree = "<group>"; };
@@ -941,6 +987,12 @@
 		C21180631CF304F40099782B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C2DDD3F41D065F4A00ED2DC8 /* 11.jpg */,
+				C2DDD3F51D065F4A00ED2DC8 /* 12.jpg */,
+				C2DDD3F61D065F4A00ED2DC8 /* 13.jpg */,
+				C2DDD3F71D065F4A00ED2DC8 /* 14.jpg */,
+				C2DDD3F81D065F4A00ED2DC8 /* 15.jpg */,
+				C2DDD3D01D065E1600ED2DC8 /* Knowledge.plist */,
 				C21B96A61CFD6E53001E6A17 /* 孕宝图 */,
 				C21B96231CFD3C01001E6A17 /* image */,
 				C21B95941CFD3BC2001E6A17 /* Story.plist */,
@@ -1109,6 +1161,14 @@
 		C21B966D1CFD6E23001E6A17 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C2DDD3E81D065E4F00ED2DC8 /* KnowDetailViewController.h */,
+				C2DDD3E91D065E4F00ED2DC8 /* KnowDetailViewController.m */,
+				C2DDD3EA1D065E4F00ED2DC8 /* KnowledgeController.h */,
+				C2DDD3EB1D065E4F00ED2DC8 /* KnowledgeController.m */,
+				C2DDD3EC1D065E4F00ED2DC8 /* KnowTitleViewController.h */,
+				C2DDD3ED1D065E4F00ED2DC8 /* KnowTitleViewController.m */,
+				C2DDD3EE1D065E4F00ED2DC8 /* WebsViewController.h */,
+				C2DDD3EF1D065E4F00ED2DC8 /* WebsViewController.m */,
 				C21B966E1CFD6E23001E6A17 /* CheckViewController.h */,
 				C21B966F1CFD6E23001E6A17 /* CheckViewController.m */,
 				C21B96701CFD6E23001E6A17 /* CheckViewController.xib */,
@@ -1130,6 +1190,10 @@
 		C21B967C1CFD6E23001E6A17 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C2DDD3D21D065E2D00ED2DC8 /* KnowledgeModel.h */,
+				C2DDD3D31D065E2D00ED2DC8 /* KnowledgeModel.m */,
+				C2DDD3D41D065E2D00ED2DC8 /* KnowTitleModel.h */,
+				C2DDD3D51D065E2D00ED2DC8 /* KnowTitleModel.m */,
 				C21B967D1CFD6E23001E6A17 /* detailModel.h */,
 				C21B967E1CFD6E23001E6A17 /* detailModel.m */,
 				C21B967F1CFD6E23001E6A17 /* NoteModel.h */,
@@ -1145,6 +1209,16 @@
 		C21B96851CFD6E23001E6A17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C2DDD3D81D065E3C00ED2DC8 /* HRScorollView.h */,
+				C2DDD3D91D065E3C00ED2DC8 /* HRScorollView.m */,
+				C2DDD3DA1D065E3C00ED2DC8 /* KnowDetailCell.h */,
+				C2DDD3DB1D065E3C00ED2DC8 /* KnowDetailCell.m */,
+				C2DDD3DC1D065E3C00ED2DC8 /* KnowDetailCell.xib */,
+				C2DDD3DD1D065E3C00ED2DC8 /* KnowledgeCell.h */,
+				C2DDD3DE1D065E3C00ED2DC8 /* KnowledgeCell.m */,
+				C2DDD3DF1D065E3C00ED2DC8 /* KnowledgeCell.xib */,
+				C2DDD3E01D065E3C00ED2DC8 /* MyView.h */,
+				C2DDD3E11D065E3C00ED2DC8 /* MyView.m */,
 				C21B96861CFD6E23001E6A17 /* NoteCell.h */,
 				C21B96871CFD6E23001E6A17 /* NoteCell.m */,
 				C21B96881CFD6E23001E6A17 /* NoteCell.xib */,
@@ -1823,6 +1897,7 @@
 				C21B970F1CFD6E53001E6A17 /* theme_h.png in Resources */,
 				C21B96E31CFD6E53001E6A17 /* addNote_h.png in Resources */,
 				C2F9BEE51D016FB400FC1DBF /* 图书_33.png in Resources */,
+				C2DDD3FA1D065F4A00ED2DC8 /* 12.jpg in Resources */,
 				C21B97001CFD6E53001E6A17 /* round_h.png in Resources */,
 				C21B95A81CFD3BE5001E6A17 /* 8.jpg in Resources */,
 				C28D26ED1CFF09FD00B1DE7D /* 喂养用品.jpg in Resources */,
@@ -1851,6 +1926,7 @@
 				C21B96F71CFD6E53001E6A17 /* me1_h.png in Resources */,
 				C2F9BEF91D016FB400FC1DBF /* 图书_44.png in Resources */,
 				C23D90F21CFD8C3B00B691A8 /* 05.jpg in Resources */,
+				C2DDD3E61D065E3C00ED2DC8 /* KnowledgeCell.xib in Resources */,
 				C21B97161CFD6E53001E6A17 /* zan1.png in Resources */,
 				C23D90E21CFD8C3B00B691A8 /* HomePageViewController.xib in Resources */,
 				C2D22E1A1CF71554002F1F36 /* exit.png in Resources */,
@@ -2024,6 +2100,7 @@
 				C2E82C941D00550B005F670F /* 精彩活动.png in Resources */,
 				C21B96A31CFD6E23001E6A17 /* StoryDetailCell.xib in Resources */,
 				C2F9BEFF1D016FB400FC1DBF /* 图书_13.png in Resources */,
+				C2DDD3D11D065E1600ED2DC8 /* Knowledge.plist in Resources */,
 				C21B96931CFD6E23001E6A17 /* CheckViewController.xib in Resources */,
 				C21B96F61CFD6E53001E6A17 /* me1.png in Resources */,
 				C2F9BF001D016FB400FC1DBF /* 图书_14.png in Resources */,
@@ -2042,14 +2119,17 @@
 				C21B95AF1CFD3BE5001E6A17 /* 1.png in Resources */,
 				C2CB9E7B1CF44A9D003CD4E9 /* girl.png in Resources */,
 				C23D90F11CFD8C3B00B691A8 /* 04.jpg in Resources */,
+				C2DDD3FB1D065F4A00ED2DC8 /* 13.jpg in Resources */,
 				C2D22E1F1CF73123002F1F36 /* AboutViewController.xib in Resources */,
 				C2F9BEF01D016FB400FC1DBF /* 图书_19.png in Resources */,
 				C28DAB211D02C60D0070B836 /* 廋身1.png in Resources */,
 				C29A6CA91CFE823E00365075 /* 21.jpg in Resources */,
 				C23D90EF1CFD8C3B00B691A8 /* 02.jpg in Resources */,
+				C2DDD3FD1D065F4A00ED2DC8 /* 15.jpg in Resources */,
 				C2F9BF0A1D016FB400FC1DBF /* 图书_02.png in Resources */,
 				C2F9BEE71D016FB400FC1DBF /* 图书_25.png in Resources */,
 				C28DAB1E1D02C60D0070B836 /* 护发2.png in Resources */,
+				C2DDD3E41D065E3C00ED2DC8 /* KnowDetailCell.xib in Resources */,
 				C28DAB2A1D02C60D0070B836 /* 巾纸3.png in Resources */,
 				C28DAB2E1D02C60D0070B836 /* 面膜3.png in Resources */,
 				C2F9BEFC1D016FB400FC1DBF /* 图书_10.png in Resources */,
@@ -2061,6 +2141,7 @@
 				C2F9BF161D016FB400FC1DBF /* 图书_52.png in Resources */,
 				C21B95AB1CFD3BE5001E6A17 /* 5.jpg in Resources */,
 				C2C080451D01D6A0004F7B89 /* MakeUpCell.xib in Resources */,
+				C2DDD3F91D065F4A00ED2DC8 /* 11.jpg in Resources */,
 				C25919E31CFE74FA00D496CB /* 推送界面.jpg in Resources */,
 				DEC2F0001CFC74E90020529A /* PublishViewController.xib in Resources */,
 				C2F9BEFE1D016FB400FC1DBF /* 图书_12.png in Resources */,
@@ -2071,6 +2152,7 @@
 				C2E82C991D00550B005F670F /* 0-12岁套装.png in Resources */,
 				C28D26EF1CFF09FD00B1DE7D /* 儿童寝居.jpg in Resources */,
 				C28DAB291D02C60D0070B836 /* 巾纸1.png in Resources */,
+				C2DDD3FC1D065F4A00ED2DC8 /* 14.jpg in Resources */,
 				C21B97021CFD6E53001E6A17 /* set.png in Resources */,
 				C2F9BF141D016FB400FC1DBF /* 图书_40.png in Resources */,
 				C2CB9E8D1CF471F5003CD4E9 /* RegisterViewController.xib in Resources */,
@@ -2146,6 +2228,7 @@
 				DEC2EFE51CFC6E470020529A /* TopicCommentCell.m in Sources */,
 				C23D911A1CFD91F900B691A8 /* WMMenuItem.m in Sources */,
 				DEC2F0031CFC74E90020529A /* PlaceholderTextView.m in Sources */,
+				C2DDD3E51D065E3C00ED2DC8 /* KnowledgeCell.m in Sources */,
 				C23D90C61CFD8C3B00B691A8 /* BeautyMakeUpViewController.m in Sources */,
 				C23D90D51CFD8C3B00B691A8 /* CellType_2.m in Sources */,
 				C211803D1CF304290099782B /* main.m in Sources */,
@@ -2154,6 +2237,8 @@
 				C23D90D31CFD8C3B00B691A8 /* CellType_1.m in Sources */,
 				C21B96941CFD6E23001E6A17 /* DetailViewController.m in Sources */,
 				C2F008551CF57EA500AD0244 /* UserViewController.m in Sources */,
+				C2DDD3D61D065E2D00ED2DC8 /* KnowledgeModel.m in Sources */,
+				C2DDD3F31D065E4F00ED2DC8 /* WebsViewController.m in Sources */,
 				C21B96921CFD6E23001E6A17 /* CheckViewController.m in Sources */,
 				C28D26FE1CFF124600B1DE7D /* HomePageCell_2.m in Sources */,
 				C21B969B1CFD6E23001E6A17 /* NoteModel.m in Sources */,
@@ -2168,6 +2253,7 @@
 				C21B96621CFD3C98001E6A17 /* FileDataHandle.m in Sources */,
 				C21B96A41CFD6E23001E6A17 /* ToolCell.m in Sources */,
 				C29A6CAD1CFE873300365075 /* ChildBookViewController.m in Sources */,
+				C2DDD3F01D065E4F00ED2DC8 /* KnowDetailViewController.m in Sources */,
 				C29A6CC41CFEC6D800365075 /* outlets.m in Sources */,
 				C2D22E151CF6F8B7002F1F36 /* MeTableViewController.m in Sources */,
 				C23D90E11CFD8C3B00B691A8 /* HomePageViewController.m in Sources */,
@@ -2184,6 +2270,7 @@
 				C23D90D21CFD8C3B00B691A8 /* Pic.m in Sources */,
 				C23D90CE1CFD8C3B00B691A8 /* Image_index.m in Sources */,
 				DEC2EFEC1CFC708A0020529A /* MBProgressHUD+gifHUD.m in Sources */,
+				C2DDD3E21D065E3C00ED2DC8 /* HRScorollView.m in Sources */,
 				C21B96991CFD6E23001E6A17 /* ToolListViewController.m in Sources */,
 				DEC2EFE21CFC6E470020529A /* TopicViewController.m in Sources */,
 				C27167931D059E980047FD6F /* PlayerViewController.m in Sources */,
@@ -2192,28 +2279,33 @@
 				DEC2EFFE1CFC74E90020529A /* PublishEditViewController.m in Sources */,
 				C23D90E01CFD8C3B00B691A8 /* HomeListViewController.m in Sources */,
 				C23D90EC1CFD8C3B00B691A8 /* YunYingViewController.m in Sources */,
+				C2DDD3F21D065E4F00ED2DC8 /* KnowTitleViewController.m in Sources */,
 				C271677E1D05548E0047FD6F /* VideoListsCell.m in Sources */,
 				C21B96651CFD3CC4001E6A17 /* UIBarButtonItem+HREctension.m in Sources */,
 				C2CB9E8C1CF471F5003CD4E9 /* RegisterViewController.m in Sources */,
 				DEC2F0041CFC74E90020529A /* VerticalButton.m in Sources */,
 				C23D90D11CFD8C3B00B691A8 /* Outlets_infos.m in Sources */,
 				C2CB9E731CF4372D003CD4E9 /* MeListCell.m in Sources */,
+				C2DDD3E71D065E3C00ED2DC8 /* MyView.m in Sources */,
 				C23D90DB1CFD8C3B00B691A8 /* CellType_7.m in Sources */,
 				C21180741CF31C170099782B /* CustomTabBar.m in Sources */,
 				C2D22E121CF6EE50002F1F36 /* TTConst.m in Sources */,
 				C2CB9E871CF45808003CD4E9 /* LoginViewController.m in Sources */,
 				C23D90EB1CFD8C3B00B691A8 /* CustomCell.m in Sources */,
 				C29A6CBC1CFE8A2200365075 /* ToyViewController.m in Sources */,
+				C2DDD3D71D065E2D00ED2DC8 /* KnowTitleModel.m in Sources */,
 				C23D90DD1CFD8C3B00B691A8 /* NetWorking.m in Sources */,
 				C211806D1CF307720099782B /* RootViewController.m in Sources */,
 				C23D911D1CFD91F900B691A8 /* WMPageController.m in Sources */,
 				C2B6174D1CF5CD070087CE72 /* SkinMode.m in Sources */,
+				C2DDD3F11D065E4F00ED2DC8 /* KnowledgeController.m in Sources */,
 				C21B969A1CFD6E23001E6A17 /* detailModel.m in Sources */,
 				DEC2EFE31CFC6E470020529A /* TopicCell.m in Sources */,
 				C21B96961CFD6E23001E6A17 /* NoteController.m in Sources */,
 				C21B96981CFD6E23001E6A17 /* StoryDetailViewController.m in Sources */,
 				C20C19F71CF929400007552E /* pregnancyViewController.m in Sources */,
 				C21B96681CFD3CCF001E6A17 /* UIImage+ImageContentWithColor.m in Sources */,
+				C2DDD3E31D065E3C00ED2DC8 /* KnowDetailCell.m in Sources */,
 				C23D90CC1CFD8C3B00B691A8 /* Data.m in Sources */,
 				C2C080441D01D6A0004F7B89 /* MakeUpCell.m in Sources */,
 				C29A6CB71CFE891500365075 /* HomeToolViewController.m in Sources */,

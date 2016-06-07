@@ -16,8 +16,12 @@
         _note = note;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.titleLabel.text = note.title;
+            self.titleLabel.textColor = [UIColor colorWithRed:248/255.0 green:231/255.0 blue:197/255.0 alpha:1.0];
+            self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
             self.dateLabel.text = note.date;
-            
+            self.dateLabel.textColor = [UIColor whiteColor];
+            self.dateLabel.font = [UIFont systemFontOfSize:15];
+            self.contentView.backgroundColor = [UIColor colorWithRed:255/255.0 green:192/255.0 blue:228/255.0 alpha:1.0];
         });
         
     }
