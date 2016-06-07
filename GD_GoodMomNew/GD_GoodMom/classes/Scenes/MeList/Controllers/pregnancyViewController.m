@@ -5,43 +5,51 @@
 //  Created by lanou3g on 16/5/28.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
-
 #import "pregnancyViewController.h"
 #import "PNChart.h"
 @interface pregnancyViewController ()
 @property(nonatomic,strong)UISearchController *searchController;
-
+@property(nonatomic,strong)NSArray *allArrayX;//X轴
+@property(nonatomic,strong)NSArray *allArrayY;//Y轴
 @end
 
 @implementation pregnancyViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor redColor];
-
     //初始化搜索框
     self.searchController = [[UISearchController alloc]initWithSearchResultsController:nil];
     self.searchController.searchBar.searchResultsButtonSelected = NO;
     self.searchController.searchBar.frame = CGRectMake(self.searchController.searchBar.frame.origin.x, self.searchController.searchBar.frame.origin.y, self.searchController.searchBar.frame.size.width - 130, 40);
-    
     //搜索时背景变模糊
 //    self.searchController.obscuresBackgroundDuringPresentation = YES;
     //是否隐藏导航栏
     self.searchController.hidesNavigationBarDuringPresentation = NO;
-
     [self.view addSubview:self.searchController.searchBar];
-    
-  [self getLineChart];
-    
-
+    [self getLineChart];
 }
--(void)getLineChart{
+//懒加载初始化数组
+- (NSArray *)allArrayX{
+    if (!_allArrayX) {
+        _allArrayX =  [NSArray array];
+    }
+    return _allArrayX;
+}
+- (NSArray *)allArrayY{
 
-    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 200, SCREEN_WIDTH, 400.0)];
-    [lineChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5"]];
+    if (!_allArrayY) {
+        _allArrayY = [NSArray array];
+    }
+    return _allArrayY;
+}
+
+-(void)getLineChart{
     
+    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 200, SCREEN_WIDTH, 400.0)];
+ 
+      [lineChart setXLabels:@[@"一",@"二",@"三",@"四"]];
     // Line Chart No.1
-    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2];
+    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2];
     PNLineChartData *data01 = [PNLineChartData new];
     data01.color = PNFreshGreen;
     data01.itemCount = lineChart.xLabels.count;
@@ -50,7 +58,7 @@
         return [PNLineChartDataItem dataItemWithY:yValue];
     };
     // Line Chart No.2
-    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2];
+    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2];
     PNLineChartData *data02 = [PNLineChartData new];
     data02.color = PNTwitterColor;
     data02.itemCount = lineChart.xLabels.count;
@@ -58,15 +66,9 @@
         CGFloat yValue = [data02Array[index] floatValue];
         return [PNLineChartDataItem dataItemWithY:yValue];
     };
-    
     lineChart.chartData = @[data01, data02];
     [lineChart strokeChart];
     [self.view addSubview:lineChart];
-
-    
-    
-    
-
 }
 
 - (void)didReceiveMemoryWarning {

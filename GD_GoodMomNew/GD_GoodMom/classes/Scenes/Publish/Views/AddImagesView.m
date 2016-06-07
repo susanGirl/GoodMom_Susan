@@ -15,7 +15,7 @@
 // 相框宽度
 #define kImagesViewW (kScreenW / 6.0)
 // 相框高度
-#define kImagesViewH kImagesViewW
+#define kImagesViewH (kImagesViewW * 3.0 / 4.0)
 
 @interface AddImagesView ()
 
@@ -33,6 +33,7 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
+    NSLog(@"%s", __FUNCTION__);
     
         for (int i = 0; i < self.imgViewArray.count; i++) {
             UIImageView *imgView = self.imgViewArray[i];

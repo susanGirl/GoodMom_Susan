@@ -16,11 +16,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *collectionButton;
 // 评论帖子的人数
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
-// 帖子图片视图背景视图
-@property (weak, nonatomic) IBOutlet UIView *imgBackgroundView;
-// 帖子文字内容
-@property (weak, nonatomic) IBOutlet UILabel *topicTextLabel;
+// cell高度的属性
+@property (assign, nonatomic) CGFloat cellHeight;
+
 // 计算cell高度
-+ (CGFloat)calculateCellHeight:(Topic *)topic;
+- (CGFloat)calculateCellHeight;
 
 @end

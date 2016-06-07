@@ -431,55 +431,8 @@ NSInteger number;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    if (indexPath.section == 1 || indexPath.section == 2 || indexPath.section == 5) {
-//        if (indexPath.row == 0) {
-//            return 70;
-//        }
-//        return kScreenWidth/2;
-//    }else if (indexPath.section == 3){
-//        if (indexPath.row == 0 || indexPath.row == _typeArray.count) {
-//            return 70;
-//        }
-//        return kScreenWidth/2;
-//    }else if (indexPath.section == 4 && indexPath.row == 0){
-//    
-//        return 70;
-//    }
     return kScreenW/2;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // TODO:选中触发事件--待优化，点击事件不对应
@@ -487,15 +440,12 @@ NSInteger number;
 
     if (indexPath.section < self.listArray.count) {
         NSMutableArray *modulesArray = [NSMutableArray array];
-        
         // 1
         for (NSDictionary *dic in self.listArray[indexPath.section]) {
             Modoules *modules = [Modoules new];
             [modules setValuesForKeysWithDictionary:dic];
             [modulesArray addObject:modules.data];
-            
         }
-       
         // 2
         _modulesArray = modulesArray;
         if (_modulesArray != modulesArray) {

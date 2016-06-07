@@ -17,8 +17,9 @@
 @property (assign, nonatomic) BOOL loginState; // 是否登录
 @property (strong, nonatomic) NSString *hobby; // 爱好
 @property (strong, nonatomic) NSString *babyGender; // 宝宝性别
-@property (strong, nonatomic) NSString *babyBirthday; // 宝宝出生日期
+@property (strong, nonatomic) NSString *babyBirthday; // 宝宝生日
 @property (strong, nonatomic) NSString *momBirthday; // 妈妈出生日期
+@property(nonatomic,strong)NSString *userGender;//用户性别
 @property (assign, nonatomic) NSInteger concernCount; // 关注作者的人数
 
 @end

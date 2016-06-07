@@ -39,6 +39,8 @@
 #import "UIImage+ImageContentWithColor.h"
 #import <SDWebImage/SDImageCache.h>
 
+#import "TTConst.h"
+
 
 #pragma mark --首页添加宏开始--
 

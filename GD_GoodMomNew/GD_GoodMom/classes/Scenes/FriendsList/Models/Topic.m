@@ -7,7 +7,6 @@
 //
 
 #import "Topic.h"
-#import "NSDate+HFExtension.h"
 
 // 间距
 #define kCellMargin 5
@@ -22,13 +21,6 @@
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key {
     
-}
-
-- (NSMutableArray *)commentsArray {
-    if (!_commentsArray) {
-        _commentsArray = [NSMutableArray array];
-    }
-    return _commentsArray;
 }
 
 - (NSString *)description {

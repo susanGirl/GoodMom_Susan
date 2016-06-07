@@ -1,6 +1,5 @@
 //
 //  MeTableViewController.m
-//  TTNews
 //
 //  Created by lanou3g on 16/5/24.
 //  Copyright © 2016年 温哲. All rights reserved.
@@ -11,7 +10,9 @@
 #import <SVProgressHUD.h>
 #import "TTConst.h"
 #import "AboutViewController.h"
-
+#import "PersonalInformationViewController.h"
+#import <AVOSCloud/AVOSCloud.h>
+#import "SendFeedbackViewController.h"
 @interface MeTableViewController ()
 
 @property (nonatomic, copy) NSString *userName;
@@ -19,7 +20,7 @@
 @property (nonatomic, weak) UISwitch *shakeCanChangeSkinSwitch;
 @property (nonatomic, weak) UISwitch *imageDownLoadModeSwitch;
 @property (nonatomic, assign) CGFloat cacheSize;
-@property (nonatomic, copy) NSString *currentSkinModel;
+@property (nonatomic, copy) NSString *currentSkinModel;//夜间模式
 
 @property(nonatomic,strong)UILabel *nameLabel;
 
@@ -31,20 +32,23 @@ CGFloat const footViewHeight = 30;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"我的";
     [self caculateCacheSize];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0 green:91/255.0 blue:197/255.0 alpha:1.0];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.contentInset = UIEdgeInsetsMake(CGRectGetMaxY(self.navigationController.navigationBar.frame) + 30, 0, 0, 0);
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    //通知中心
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSkinModel) name:SkinModelDidChangedNotification object:nil];
     [self updateSkinModel];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];//移除观察者
 }
 
 #pragma mark 更新皮肤模式 接到模式切换的通知后会调用此方法
@@ -54,7 +58,8 @@ CGFloat const footViewHeight = 30;
         self.tableView.backgroundColor = [UIColor blackColor];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     } else {//日间模式
-        self.tableView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
+//        self.tableView.backgroundColor = [UIColor colorWithRed:255/255.0 green:91/255.0 blue:197/255.0 alpha:1.0];
+        self.tableView.backgroundColor =  kGlobalBackgroudColor;
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     }
     [self.tableView reloadData];
@@ -68,8 +73,6 @@ CGFloat const footViewHeight = 30;
     self.cacheSize = imageCache + sqliteCache;
 }
 
-#pragma mark - Table view data source
-
 #pragma mark -UITableViewDataSource 返回tableView有多少组
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -78,7 +81,7 @@ CGFloat const footViewHeight = 30;
 #pragma mark -UITableViewDataSource 返回tableView每一组有多少行
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) return 1;
-    else if(section == 1) return 4;
+    else if(section == 1) return 2;
     return 2;
 }
 
@@ -102,9 +105,9 @@ CGFloat const footViewHeight = 30;
     lineView2.frame = CGRectMake(0, footViewHeight - 1, [UIScreen mainScreen].bounds.size.width, 1);
     [footView addSubview:lineView2];
     if ([self.currentSkinModel isEqualToString:DaySkinModelValue]) {//日间模式
-        footView.backgroundColor = [UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0];
-        lineView1.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
-        lineView2.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
+        footView.backgroundColor = kGlobalBackgroudColor;
+        lineView1.backgroundColor = kGlobalBackgroudColor;
+        lineView2.backgroundColor = kGlobalBackgroudColor;
     } else {
         footView.backgroundColor = [UIColor blackColor];
         lineView1.backgroundColor = [UIColor blackColor];
@@ -130,26 +133,24 @@ CGFloat const footViewHeight = 30;
         
         UIImageView *avatarImageView = [[UIImageView alloc] init];
         avatarImageView.frame =CGRectMake(margin, margin, cellHeight - 2*margin, cellHeight - 2*margin);
-        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"headerImage"];
-        UIImage *image = [UIImage imageWithContentsOfFile:path];
-        if (image == nil) {
-            image = [UIImage imageNamed:@"woman"];
-            [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
-        }
-        avatarImageView.image = image;
+        AVFile *avatarFile = [AVFile fileWithURL:[AVUser currentUser][@"avatar"]];
+        // 获取头像的缩略图
+        [avatarFile getThumbnail:YES width:70 height:70 withBlock:^(UIImage *image, NSError *error) {
+            avatarImageView.image = image;
+        }];
         avatarImageView.layer.cornerRadius = avatarImageView.frame.size.width * 0.5;
         avatarImageView.layer.masksToBounds = YES;
         [cell addSubview:avatarImageView];
-        
         UILabel *nameLabel = [[UILabel alloc] init];
         self.nameLabel  = nameLabel;
         //属性传值
         self.nameLabel.text  = self.content;
         CGFloat nameLabelHeight = 21.5;
-
-        nameLabel.font = [UIFont systemFontOfSize:18];
+//        nameLabel.font = [UIFont systemFontOfSize:18];
+#pragma mark--字体加粗
+        nameLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:25];
         if ([self.currentSkinModel isEqualToString:DaySkinModelValue]) {//日间模式
-            nameLabel.textColor = [UIColor blackColor];
+            nameLabel.textColor = [UIColor colorWithRed:255/255.0 green:91/255.0 blue:197/255.0 alpha:1.0];
             lineView.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
         } else {
             nameLabel.textColor = [UIColor grayColor];
@@ -172,46 +173,42 @@ CGFloat const footViewHeight = 30;
     
     else if (indexPath.section == 1) {
        if (indexPath.row == 0) {
-                cell.textLabel.text = @"夜间模式";
+                cell.textLabel.text = @"👶夜间模式";
                 if (cell.accessoryView == nil) {
                     UISwitch *changeSkinSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 51, 31)];
                     self.changeSkinSwitch = changeSkinSwitch;
                     [changeSkinSwitch addTarget:self action:@selector(switchDidChange:) forControlEvents:UIControlEventValueChanged];
-
                     cell.accessoryView = changeSkinSwitch;
                 }
         }
         else if (indexPath.row == 1) {
-                cell.textLabel.text = @"清除缓存";
+                cell.textLabel.text = @"👶清除缓存";
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%.1f MB",self.cacheSize];
             }
-
         } else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
-                cell.textLabel.text = @"反馈";
+                cell.textLabel.text = @"👶反馈";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             } else if(indexPath.row == 1) {
-                cell.textLabel.text = @"关于";
+                cell.textLabel.text = @"👶关于";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-        
     }
     
     if ([self.currentSkinModel isEqualToString:NightSkinModelValue]) {//夜间模式
         cell.backgroundColor = [UIColor colorWithRed:35/255.0 green:32/255.0 blue:36/255.0 alpha:1.0];
         cell.textLabel.textColor =  [UIColor colorWithRed:111/255.0 green:109/255.0 blue:112/255.0 alpha:1.0];
+        cell.textLabel.font =   [UIFont fontWithName:@"Helvetica-Bold" size:20];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         self.changeSkinSwitch.on = YES;
-    } else {//夜间模式
-        cell.backgroundColor =[UIColor whiteColor];
-        cell.textLabel.textColor = [UIColor blackColor];
+    } else {//日间
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor grayColor];
+        cell.textLabel.font =   [UIFont fontWithName:@"Helvetica-Bold" size:20];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         self.changeSkinSwitch.on = NO;
     }
-    
-    
     return cell;
-
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -219,19 +216,27 @@ CGFloat const footViewHeight = 30;
     if (indexPath.section == 1 && indexPath.row == 1) {
         [SVProgressHUD show];
         [[SDImageCache sharedImageCache] clearDisk];
+        BOOL file = [AVFile clearAllCachedFiles];
+        file = YES;//清除所有缓存
         [SVProgressHUD showSuccessWithStatus:@"缓存清除完毕!"];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"0.0MB"];
-
     }else if (indexPath.section == 2 && indexPath.row == 1){
-    
         AboutViewController *aboutVC  = [AboutViewController new];
         [self.navigationController pushViewController:aboutVC animated:YES];
-    
+    }else if (indexPath.section == 0 && indexPath.row == 0){
+        
+        PersonalInformationViewController *personalVC = [PersonalInformationViewController new];
+        personalVC.hidesBottomBarWhenPushed =  YES;
+        personalVC.content = self.nameLabel.text;
+        [self.navigationController pushViewController:personalVC animated:YES];
+        
+    }else if(indexPath.section == 2 && indexPath.row == 0){
+        SendFeedbackViewController *sendVC = [SendFeedbackViewController new];
+#pragma mark---当push到下一个控制器的时候，隐藏tabbar
+        sendVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:sendVC animated:YES];
     }
-    
-    
-    
 }
 
 -(void)switchDidChange:(UISwitch *)theSwitch {
@@ -245,6 +250,8 @@ CGFloat const footViewHeight = 30;
         [[NSNotificationCenter defaultCenter] postNotificationName:SkinModelDidChangedNotification object:self];
     }
 }
+
+
 
 
 

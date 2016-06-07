@@ -12,9 +12,11 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;//头像
 
-
 @property (weak, nonatomic) IBOutlet UILabel *userNameLable;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 
+-(void)updateToDaySkinMode;//日间模式
+-(void)updateToNightSkinMode;//夜间模式
 
 @end

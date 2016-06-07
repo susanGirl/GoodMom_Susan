@@ -23,19 +23,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     //设置标题
     self.title = @"登录";
 }
 
 #pragma mark----登录按钮
 - (IBAction)loginAction:(id)sender {
-    
     __weak LoginViewController *loginVC = self;
-    
-    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         // 如果登录成功，退出登录页面
         if ([alert.message isEqualToString:@"登录成功"]) {
@@ -44,54 +39,31 @@
     }];
     // 添加到提示框
     [alert addAction:cancelAction];
-    
     // 判断用户名和密码是否为空
     if ([_userNameTextField.text isEqualToString:@""] || [_passwordTextField.text isEqualToString:@""]) {
-        
         alert.message = @"用户名或密码不能为空";
         [loginVC presentViewController:alert animated:YES completion:nil];
-        
     } else {
-        
         [AVUser logInWithUsernameInBackground:self.userNameTextField.text password:self.passwordTextField.text block:^(AVUser *user, NSError *error) {
             if (user != nil) {
-                
                 // 登录成功
                 NSLog(@"登录成功");
                 // 改变登录状态
                 [user setObject:[NSNumber numberWithBool:YES] forKey:@"loginState"];
                 // 保存状态到服务器
                 [user saveInBackground];
-                
                 User *theUser = [User new];
                 theUser.userName = user.username;
                 theUser.loginState = user[@"loginState"];
                 theUser.passWord = user.password;
                 // 头像URL
                 theUser.avatar = user[@"avatar"];
-                
                 // block传值，将user传递到“我的”页面
                 loginVC.block(theUser);
                 // 保存到本地
                 [FileHandle saveUserInfo:theUser];
-                
                 // 登录成功，退出登录页面
                 [loginVC dismissViewControllerAnimated:YES completion:nil];
-                
-//                AVQuery *avatarURLQuery = [AVQuery queryWithClassName:@"_File"];
-//                [avatarURLQuery whereKey:@"name" equalTo:[AVUser currentUser].username];
-//                [avatarURLQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                    NSLog(@"----9---%@", objects);
-//                    AVObject *user = objects.firstObject;
-//                    NSString *avatarURL = [user objectForKey:@"avatar"];
-//                    theUser.avatar = avatarURL;
-//                    NSLog(@"---------2-----%@", theUser.avatar);
-//                    
-//
-//                
-//
-//                }];
-                
             } else {
                 // 登录失败
                 NSLog(@"登录失败，失败代码%@", error);
@@ -102,7 +74,6 @@
                     alert.message = @"登录失败!";
                     [loginVC presentViewController:alert animated:YES completion:nil];
                 }
-                
             }
         }];
     }
@@ -163,22 +134,17 @@
 
 #pragma mark------注册按钮
 - (IBAction)registerAction:(id)sender {
-    
     RegisterViewController *registerVC = [[RegisterViewController alloc] init];
     registerVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentViewController:registerVC animated:YES completion:nil];
-    
 }
 #pragma mark-----退出按钮
 - (IBAction)exitAction:(id)sender {
-    
     [self dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 #pragma mark -- 点击空白处收回键盘
 - (IBAction)tapEmpty:(id)sender {
-    
     //键盘回收
     [_userNameTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
@@ -189,12 +155,8 @@
     //键盘回收
     return [_passwordTextField resignFirstResponder] | [_userNameTextField resignFirstResponder];
 }
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    
-    
 }
 
 
