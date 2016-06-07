@@ -18,6 +18,7 @@
         self.tabBarItem.title = @"商城";
         [self.tabBarItem setImage:[UIImage imageNamed:@"Home"]];
         [self.tabBarItem setSelectedImage:[UIImage imageNamed:@"Home-H"]];
+        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"好妈妈导航条.png"] forBarMetrics:UIBarMetricsDefault];
     }
     return self;
 }

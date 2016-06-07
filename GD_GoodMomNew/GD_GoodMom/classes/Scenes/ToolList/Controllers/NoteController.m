@@ -110,7 +110,7 @@ static NSString *const NoteCellID = @"NoteCellID";///cell标识符
     NoteCell *cell = [tableView dequeueReusableCellWithIdentifier:NoteCellID forIndexPath:indexPath];
     NoteModel *note = _noteArray[indexPath.row];
     cell.note = note;
-   
+    cell.backgroundColor = [UIColor colorWithRed:arc4random_uniform(300)/225.0 green:arc4random_uniform(300)/225.0 blue:arc4random_uniform(300)/225.0 alpha:1.0];
     
     return cell;
 }

@@ -29,7 +29,7 @@
     MBProgressHUD *hud = [self showHUDAddedTo:view animated:YES]; // 添加hud到view
     hud.color = kRGBColor(0, 0, 0, 0.2); // 自定义颜色
     hud.mode = MBProgressHUDModeCustomView; // 自定义视图
-    hud.labelText = @"数据处理中..."; // 自定义文字
+    hud.labelText = @"正在加载..."; // 自定义文字
     hud.customView = gifView; // 自定义图片视图
 }
 

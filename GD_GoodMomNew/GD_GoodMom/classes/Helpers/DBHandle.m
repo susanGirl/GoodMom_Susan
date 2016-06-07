@@ -80,8 +80,9 @@ static sqlite3 *db = nil;
     
 }
 
+
 #pragma mark 添加日记
-- (BOOL)insertNoteWith:(NoteModel *)note{
+- (void)insertNoteWith:(NoteModel *)note{
     
     sqlite3_stmt *stmt = nil;
     NSString *sql = @"insert into 'noteNew' values(?,?,?)";
@@ -92,35 +93,14 @@ static sqlite3 *db = nil;
         sqlite3_bind_text(stmt, 3, note.date.UTF8String, -1, NULL);
         sqlite3_step(stmt);
         NSLog(@"插入数据成功");
-        sqlite3_finalize(stmt);
-        return YES;
     }else{
-        sqlite3_finalize(stmt);
+        
         NSLog(@"插入失败，错误%d",result);
-        return NO;
     }
-    return NO;
+    sqlite3_finalize(stmt);
+
+    
 }
-//#pragma mark 添加日记
-//- (void)insertNoteWith:(NoteModel *)note{
-//    
-//    sqlite3_stmt *stmt = nil;
-//    NSString *sql = @"insert into 'noteNew' values(?,?,?)";
-//    int result = sqlite3_prepare(db, sql.UTF8String, -1, &stmt, NULL);
-//    if (result == SQLITE_OK) {
-//        sqlite3_bind_text(stmt, 1, note.title.UTF8String, -1, NULL);
-//        sqlite3_bind_text(stmt, 2, note.detail.UTF8String, -1, NULL);
-//        sqlite3_bind_text(stmt, 3, note.date.UTF8String, -1, NULL);
-//        sqlite3_step(stmt);
-//        NSLog(@"插入数据成功");
-//    }else{
-//        
-//        NSLog(@"插入失败，错误%d",result);
-//    }
-//    sqlite3_finalize(stmt);
-//
-//    
-//}
 #pragma mark 删除日记
 - (void)deleteNoteWith:(NSString  *)title{
     

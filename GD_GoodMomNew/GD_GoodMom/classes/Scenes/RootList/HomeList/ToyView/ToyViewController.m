@@ -2,67 +2,90 @@
 //  ToyViewController.m
 //  GD_GoodMom
 //
-//  Created by lanou3g on 16/5/25.
+//  Created by lanou3g on 16/6/1.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
 
 #import "ToyViewController.h"
-#define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#import "WebViewController.h"
+
 @interface ToyViewController ()<UIWebViewDelegate>
+
 
 @end
 
 @implementation ToyViewController
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:COLOR_arc green:COLOR_arc blue:COLOR_arc alpha:1.0];
     
-    webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, kScreenHeight-70)];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://m.mia.com/special/module/index/5027/app/"]];
-    
-    [webView setDelegate:self];
-    [self.view addSubview:webView];
-    [webView loadRequest:request];
+    //    _childBook setBackgroundImage:<#(nullable UIImage *)#> forState:<#(UIControlState)#>
     
 }
-// 1.网页开始加载的时候调用
-- (void )webViewDidStartLoad:(UIWebView *)webView{
+- (IBAction)button_1:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
     
-    //创建UIActivityIndicatorView背底半透明View
-    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-    [view setTag:108];
-    [view setBackgroundColor:[UIColor blackColor]];
-    [view setAlpha:0.5];
-    [self.view addSubview:view];
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
     
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-    [activityIndicator setCenter:view.center];
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [view addSubview:activityIndicator];
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=416&sp=0,0,0";
     
-    
-    [activityIndicator startAnimating];
-    
-    
+    [self.navigationController pushViewController:webViewVC animated:YES];
 }
-// 2.网页加载完成的时候调用
-- (void )webViewDidFinishLoad:(UIWebView *)webView{
+- (IBAction)button_2:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
     
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
     
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=681&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
 }
-// 3.网页加载错误的时候调用
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+- (IBAction)button_3:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
     
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
     
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=3708&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
 }
+- (IBAction)button_4:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=1447&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+- (IBAction)button_5:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=329&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+- (IBAction)button_6:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=143&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+
+- (IBAction)button_7:(id)sender {
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = @"http://www.mia.com/search/s?k=%E7%8E%A9%E5%85%B7%E5%88%86%E7%B1%BB&b=344&sp=0,0,0";
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+
+
 
 @end

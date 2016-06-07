@@ -17,10 +17,7 @@
         _tool = nil;
         _tool = tool;
         _titleLabel.text = tool.title;
-        _titleLabel.textColor = [UIColor colorWithRed:255/255.0 green:91/255.0 blue:197/255.0 alpha:1.0];
-        _titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:23];
         _iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.jpg",tool.iconImage]];
-        
     }
     
 }

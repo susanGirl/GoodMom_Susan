@@ -3,12 +3,10 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BeautyMakeUpViewController">
             <connections>
-                <outlet property="bannerScrollView" destination="qCa-IF-DWc" id="B48-nJ-hMe"/>
                 <outlet property="tableView" destination="dor-r4-0tH" id="8UF-bx-m3r"/>
                 <outlet property="view" destination="iN0-l3-epB" id="yaZ-sl-Ah4"/>
             </connections>
@@ -18,27 +16,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qCa-IF-DWc">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="qCa-IF-DWc" secondAttribute="height" multiplier="8:5" id="ekr-z2-Cgp"/>
-                    </constraints>
-                </scrollView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dor-r4-0tH">
-                    <rect key="frame" x="0.0" y="200" width="320" height="368"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="dor-r4-0tH" secondAttribute="bottom" id="35A-Ya-S7j"/>
-                <constraint firstItem="qCa-IF-DWc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="4zP-v5-EMj"/>
-                <constraint firstItem="qCa-IF-DWc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nxs-EO-95g"/>
+                <constraint firstItem="dor-r4-0tH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="3pY-KY-bOG"/>
                 <constraint firstItem="dor-r4-0tH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Pkt-Ht-JSM"/>
-                <constraint firstItem="dor-r4-0tH" firstAttribute="top" secondItem="qCa-IF-DWc" secondAttribute="bottom" id="eav-g6-dXJ"/>
                 <constraint firstAttribute="trailing" secondItem="dor-r4-0tH" secondAttribute="trailing" id="lhc-uz-RLE"/>
-                <constraint firstItem="dor-r4-0tH" firstAttribute="top" secondItem="qCa-IF-DWc" secondAttribute="bottom" id="sV9-Gc-CF8"/>
-                <constraint firstAttribute="trailing" secondItem="qCa-IF-DWc" secondAttribute="trailing" id="zQG-U8-kAd"/>
             </constraints>
             <point key="canvasLocation" x="298" y="303"/>
         </view>

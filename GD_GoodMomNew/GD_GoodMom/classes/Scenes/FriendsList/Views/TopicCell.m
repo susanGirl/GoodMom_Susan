@@ -7,19 +7,12 @@
 //
 
 #import "TopicCell.h"
-#import "TopicCommentListViewController.h"
-#import "NSDate+HFExtension.h"
-#import <AVOSCloud/AVOSCloud.h>
 
 // 间距
 #define kCellMargin 5
-// 头像视图高度
-#define kAvatarImageViewH 40
-// 底部工具条高度
-#define kToolViewH 20
 // 帖子图片视图背景视图
-#define kImgBackgroundViewW (kScreenW - 2 * kCellMargin)
-#define kImgBackgroundViewH kImgBackgroundViewW
+#define kImgBackgroundViewW self.contentView.width
+#define kImgBackgroundViewH (kImgBackgroundViewW * 3 / 4)
 
 @interface TopicCell ()
 
@@ -56,24 +49,7 @@
 
 @implementation TopicCell
 
-
-- (void)layoutSubviews {
-    
-    [super layoutSubviews];
-    CGRect frame = self.contentView.frame;
-    
-    frame.origin.x = kCellMargin;
-    frame.size.width -= 2 * kCellMargin;
-    frame.size.height -= kCellMargin;
-    frame.origin.y += kCellMargin;
-    self.backgroundColor = kGlobalBackgroudColor;
-    self.contentView.frame = frame;
-    self.contentView.backgroundColor = [UIColor whiteColor];
-
-}
-
 - (void)awakeFromNib {
-
 
 }
 
@@ -84,115 +60,91 @@
         _topic = nil;
         _topic = topic;
         
-        
         // 设置用户头像
         AVFile *file = [AVFile fileWithURL:self.topic.avatar];
         NSData *avatarData = [file getData];
         UIImage *avatarImage = [UIImage imageWithData:avatarData];
         self.avatarImageView.image = avatarImage;
         
-        
         // 设置用户昵称
         self.usernameLabel.text = self.topic.username;
         
         // 设置发帖时间
-        /**
-         *  日期的最终显示格式
-         *今年
-         *  今天
-         *      1分钟内：刚刚
-         *      1小时内：xx分钟前
-         *      其他：xx小时前
-         *  昨天：昨天 18：56：35
-         *非今年：2015-04-05 18：45：34
-         */
-        // 日期格式化类
-        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-        // 设置日期格式
-        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        if (self.topic.creatAt.isThisYear) {
-            // 今年
-            if (self.topic.creatAt.isToday) {
-                // 今天
-                NSDateComponents *cmps = [[NSDate date] deltaFrom:self.topic.creatAt];
-                if (cmps.hour >= 1) {
-                    // 时间差距 >= 1小时
-                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld小时前", cmps.hour];
-                }else if (cmps.minute >= 1) {
-                    // 1小时 > 时间差距 >= 1分钟
-                    self.createdAtLabel.text = [NSString stringWithFormat:@"%ld分钟前", cmps.minute];
-                }else {
-                    // 1分钟 > 时间差距
-                    self.createdAtLabel.text = @"刚刚";
-                }
-            } else if (self.topic.creatAt.isYesterday) {
-                // 昨天
-                fmt.dateFormat = @"昨天 HH:mm:ss";
-                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
-            } else {
-                // 其他
-                fmt.dateFormat = @"MM-dd HH:mm:ss";
-                self.createdAtLabel.text = [fmt stringFromDate:self.topic.creatAt];
-            }
-        }else {
-            // 非今年
-            self.createdAtLabel.text = [NSString stringWithFormat:@"%@", self.topic.creatAt];
-        }
-        
+        NSDateFormatter *dateformatter = [NSDateFormatter new];
+        NSTimeZone *timeZone = [NSTimeZone localTimeZone];
+        [dateformatter setTimeZone:timeZone];
+        [dateformatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *createAtString =  [dateformatter stringFromDate:self.topic.creatAt];
+        self.createdAtLabel.text = createAtString;
         
         // 帖子文字内容
         self.topicTextLabel.text = topic.text;
-        _topicTextLabel.numberOfLines = 0;
-       CGFloat topicHeight = [[self class] calculateTextHeight:_topic];
-        CGRect frame = self.topicTextLabel.frame;
-        frame.size.height = topicHeight;
-        _topicTextLabel.frame = frame;
         
         // 帖子图片内容
+        NSLog(@"%@", self.topic.images);
+        
+        // 有效图片数量
+        __block NSInteger imagesCount = 0;
+        
         for (int i = 0; i < self.topic.images.count; i++) {
             AVFile *imgFile = [AVFile fileWithURL:self.topic.images[i]];
-            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIImage *img = [UIImage imageWithData:data];
+            
+            [imgFile getThumbnail:YES width:self.imgBackgroundView.width height:kImgBackgroundViewH withBlock:^(UIImage *image, NSError *error) {
+                
+                if (image) {
                     UIImageView *imgView = [[UIImageView alloc] init];
-                    imgView.frame = CGRectMake(0, i * kImgBackgroundViewH + i * kCellMargin, self.imgBackgroundView.width, kImgBackgroundViewH);
-                    imgView.image = img;
-                    imgView.contentMode = UIViewContentModeCenter;
-                    imgView.contentMode = UIViewContentModeScaleToFill;
-
-                    CGRect frame = self.imgBackgroundView.frame;
-                    frame.size.height = i * kImgBackgroundViewH;
-                    self.imgBackgroundView.frame = frame;
+                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+                    imgView.image = image;
                     [self.imgBackgroundView addSubview:imgView];
                     
-                });     
-            } progressBlock:^(NSInteger percentDone) {
+                    // 有效图片加“1”
+                    imagesCount += 1;
+                    
+                    self.imagesCount = imagesCount;
+                }
                 
             }];
+            
+            
+            // ============ 另外一种获取图片的方法 =============
+            //            [imgFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            //                UIImage *img = [UIImage imageWithData:data];
+            //
+            //                if (img) {
+            //                    UIImageView *imgView = [[UIImageView alloc] init];
+            //                    imgView.frame = CGRectMake(0, imagesCount * kImgBackgroundViewH, self.imgBackgroundView.width, kImgBackgroundViewH);
+            //                    imgView.image = img;
+            //                    [self.imgBackgroundView addSubview:imgView];
+            //
+            //                    // 有效图片加“1”
+            //                    imagesCount += 1;
+            //
+            //                    self.imagesCount = imagesCount;
+            //                }
+            //                
+            //            } progressBlock:^(NSInteger percentDone) {
+            //                
+            //            }];
+            // ================================
         }
 
         // 设置收藏帖子的人数
         [self setupButtonTitle:self.collectionButton count:self.topic.collectionCount placeholder:@"收藏"];
         // 设置评论帖子的人数
         [self setupButtonTitle:self.commentButton count:self.topic.commentCount placeholder:@"评论"];
-        
         // 宝宝性别
         self.babyGenderLabel.text = self.topic.babyGender;
-        
-        AVQuery *query = [AVQuery queryWithClassName:@"Topic"];
-        [query whereKey:@"objectId" equalTo:self.topic.objectId];
-        
-        // 到服务器查找该帖子
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            // 获取帖子
-            Topic *currentTopic = objects[0];
-            
-            if ([[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
-                self.collectionButton.selected = YES;
-            }else {
-                self.collectionButton.selected = NO;
-            }
-        }];
+#warning 计算宝宝年龄
+        // 宝宝年龄
+//        NSDate *currentDate = [NSDate date];
+//        NSDateFormatter *fmt = [NSDateFormatter new];
+//        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+//        NSString *babyBirthday = self.topic.user.babyBirthday;
+        // 当前时间 - 宝贝出生日期 = 宝宝年龄
+        NSDate *babyBirthday = self.topic.babyBirthday;
+        NSString *dateString = [dateformatter stringFromDate:babyBirthday];
+        self.babyBirthdayLabel.text = dateString;
+
     }
 }
 
@@ -208,21 +160,43 @@
     [button setTitle:placeholder forState:UIControlStateNormal];
 }
 
+#pragma mark -- 设置Frame --
+- (void)setFrame:(CGRect)frame {
+    
+    frame.origin.x = kCellMargin;
+    frame.size.width -= 2 * kCellMargin;
+    frame.size.height -= kCellMargin;
+    frame.origin.y += kCellMargin;
+    [super setFrame:frame];
+}
 
-// 计算文本高度
-+ (CGFloat)calculateTextHeight:(Topic *)topic {
+- (void)layoutSubviews {
+
+
+    // -- 文本位置尺寸 --
+    // 文本Y坐标
+    self.topicTextLabel.y = CGRectGetMaxY(self.avatarImageView.frame) + kCellMargin;
     // 文本高度
-    CGSize maxSize = CGSizeMake(kScreenW - 2 * kCellMargin , 10000);
+    CGSize maxSize = CGSizeMake([UIScreen mainScreen].bounds.size.width - 2 * kCellMargin , 10000);
     // 计算文本的高度
-    CGFloat textH = [topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]} context:nil].size.height;
-    return textH;
+    CGFloat textH = [self.topic.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]} context:nil].size.height;
+    self.topicTextLabel.height = textH;
+    
+    // -- 图片位置尺寸 --
+    self.imgBackgroundView.y = self.topicTextLabel.y + self.topicTextLabel.height + kCellMargin;
+    self.imgBackgroundView.height = kImgBackgroundViewH * self.imagesCount;
+    
+    // -- 底部控件底部视图位置尺寸 --
+    self.bottomToolView.y = CGRectGetMaxY(self.imgBackgroundView.frame) + kCellMargin;
+    
 }
 
 // 计算cell高度
-+ (CGFloat)calculateCellHeight:(Topic *)topic {
+- (CGFloat)calculateCellHeight {
+
+    // cell的高度（包含文字时）
+    return self.bottomToolView.y + 30 + kCellMargin;
     
-    // cell的高度
-    return (kImgBackgroundViewH * topic.images.count) + [[self class] calculateTextHeight:topic]  + kAvatarImageViewH +  kToolViewH + 8 * kCellMargin + topic.images.count * kCellMargin;
 }
 
 #pragma mark -- 收藏帖子 --
@@ -231,13 +205,13 @@
     UIButton *collectionButton = (UIButton *)sender;
     
     AVQuery *query = [AVQuery queryWithClassName:@"Topic"];
-    [query whereKey:@"objectId" equalTo:self.topic.objectId];
+    [query whereKey:@"createdAt" equalTo:self.topic.creatAt];
 
     // 到服务器查找该帖子
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        NSLog(@"%@", [objects[0] objectForKey:@"localData"]);
         // 获取帖子
-    Topic *currentTopic = objects[0];
-        
+        Topic *currentTopic = objects[0];
         // 获取帖子当前收藏数量
         NSInteger currentCollectionCount = [[[currentTopic objectForKey:@"localData"] objectForKey:@"collectionCount"] integerValue];
         
@@ -246,113 +220,22 @@
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
         [alert addAction:okAction];
         
-        // -- 第一种写法 --
-        // 收藏按钮是为选中状态时
-//        if (collectionButton.selected == NO) {
-//        
-//             // 如果没有收藏该帖子，就开始收藏
-//            if (![[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
-//
-//                // 收藏数量加“1”
-//                currentCollectionCount += 1;
-//                // collectionButton改为选中状态
-//                collectionButton.selected = YES;
-//                
-//                // 将要收藏的帖子保存到当前用户的收藏列表中
-//                [[[AVUser currentUser] objectForKey:@"collectionTopics"] addObject:currentTopic.objectId];
-//                [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-//                [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                    
-//                    if (succeeded) {
-//                        // 提示收藏成功
-//                        alert.message = @"收藏成功!";
-//                    
-//                    }else {
-//                        alert.message = [NSString stringWithFormat:@"收藏失败，失败原因:%@", error];
-//                    }
-//                }];
-//
-//            }
-//           
-//            
-//        } else {
-//        
-//            // 如果已经收藏了该帖子，就取消收藏
-//            if ([[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
-//                
-//                // 收藏数量减“1”
-//                currentCollectionCount -= 1;
-//                // collectionButton改为未选中状态
-//                collectionButton.selected = NO;
-//                // 提示取消收藏成功
-//                alert.message = @"取消收藏成功!";
-//                
-//                // 将收藏的帖子保存到当前用户的收藏列表中
-//                [[[AVUser currentUser] objectForKey:@"collectionTopics"] removeObject:currentTopic.objectId];
-//                [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-//                [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                    if (succeeded) {
-//                        // 提取取消收藏成功
-//                        alert.message = @"取消收藏成功!";
-//                    } else {
-//                        alert.message = [NSString stringWithFormat:@"取消收藏失败，失败原因：%@", error];
-//                    }
-//                }];
-//            }
-
-//        }
-        
-        
-        // -- 第二种写法 --
-        // 如果没有收藏该帖子，就开始收藏
-        if (![[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
-            
+        if (collectionButton.selected == NO) {
             // 收藏数量加“1”
             currentCollectionCount += 1;
-            
-            // 将要收藏的帖子保存到当前用户的收藏列表中
-            [[[AVUser currentUser] objectForKey:@"collectionTopics"] addObject:currentTopic.objectId];
-            [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-            [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                
-                if (succeeded) {
-                    // 提示收藏成功
-                    alert.message = @"收藏成功!";
-                    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-                    
-                    // collectionButton改为选中状态
-                    collectionButton.selected = YES;
-                    
-                }else {
-                    alert.message = [NSString stringWithFormat:@"收藏失败，失败原因:%@", error];
-                }
-            }];
-            
+            // collectionButton改为选中状态
+            collectionButton.selected = YES;
+            // 提示收藏成功
+            alert.message = @"收藏成功!";
         } else {
-            
-            // 如果已经收藏了该帖子，就取消收藏
-            
             // 收藏数量减“1”
             currentCollectionCount -= 1;
-            
-            // 将收藏的帖子保存到当前用户的收藏列表中
-            [[[AVUser currentUser] objectForKey:@"collectionTopics"] removeObject:currentTopic.objectId];
-            [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-            [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    // 提取取消收藏成功
-                    alert.message = @"取消收藏成功!";
-                    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-                    
-                    // collectionButton改为未选中状态
-                    collectionButton.selected = NO;
-                    
-                } else {
-                    alert.message = [NSString stringWithFormat:@"取消收藏失败，失败原因：%@", error];
-                }
-            }];
+            // collectionButton改为选中状态
+            collectionButton.selected = NO;
+            // 提示取消收藏成功
+            alert.message = @"取消收藏成功!";
         }
-        
+
         // 设置最新收藏数量
         [currentTopic setObject:[NSNumber numberWithInteger:currentCollectionCount] forKey:@"collectionCount"];
         
@@ -361,7 +244,7 @@
 
             if (succeeded) {
                 
-//                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                 
                 // 改变帖子页面显示的收藏数量
                 [self updateCollectionCountShow:currentCollectionCount];
@@ -382,8 +265,6 @@
 }
 #pragma mark -- 评论帖子 --
 - (IBAction)commentTopicAction:(id)sender {
- 
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -68,29 +68,24 @@
                 theUser.loginState = user[@"loginState"];
                 theUser.passWord = user.password;
                 // 头像URL
-                theUser.avatar = user[@"avatar"];
-                
-                // block传值，将user传递到“我的”页面
-                loginVC.block(theUser);
-                // 保存到本地
-                [FileHandle saveUserInfo:theUser];
-                
-                // 登录成功，退出登录页面
-                [loginVC dismissViewControllerAnimated:YES completion:nil];
-                
-//                AVQuery *avatarURLQuery = [AVQuery queryWithClassName:@"_File"];
-//                [avatarURLQuery whereKey:@"name" equalTo:[AVUser currentUser].username];
-//                [avatarURLQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                    NSLog(@"----9---%@", objects);
-//                    AVObject *user = objects.firstObject;
-//                    NSString *avatarURL = [user objectForKey:@"avatar"];
-//                    theUser.avatar = avatarURL;
-//                    NSLog(@"---------2-----%@", theUser.avatar);
-//                    
-//
-//                
-//
-//                }];
+                AVQuery *avatarURLQuery = [AVQuery queryWithClassName:@"_File"];
+                [avatarURLQuery whereKey:@"name" equalTo:[AVUser currentUser].username];
+                [avatarURLQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                    NSLog(@"----9---%@", objects);
+                    AVObject *user = objects.lastObject;
+                    NSString *avatarURL = [user objectForKey:@"url"];
+                    theUser.avatar = avatarURL;
+                    NSLog(@"---------2-----%@", theUser.avatar);
+                    
+                    // block传值，将user传递到“我的”页面
+                    self.block(theUser);
+                    
+                    // 保存到本地
+                    [FileHandle saveUserInfo:theUser];
+                    
+                    // 登录成功，退出登录页面
+                    [loginVC dismissViewControllerAnimated:YES completion:nil];
+                }];
                 
             } else {
                 // 登录失败

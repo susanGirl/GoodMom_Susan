@@ -11,5 +11,4 @@
 @interface PublishEditViewController : UIViewController
 // 帖子分类
 @property (strong, nonatomic) NSString *topicTitle;
-
 @end

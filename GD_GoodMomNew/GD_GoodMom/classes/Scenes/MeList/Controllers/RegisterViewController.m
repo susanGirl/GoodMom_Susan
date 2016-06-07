@@ -12,7 +12,6 @@
 #import <UIImageView+WebCache.h>
 #import <AVOSCloud/AVOSCloud.h>
 #import "User.h"
-#import "MBProgressHUD+gifHUD.h"
 
 @interface RegisterViewController ()<UINavigationControllerDelegate,UIImagePickerControllerDelegate, UITextFieldDelegate>
 
@@ -43,8 +42,6 @@
     
     // 打开avatarImageView用户交互
     self.avatarImageView.userInteractionEnabled = YES;
-    
-    
     
 }
 
@@ -82,16 +79,17 @@
     NSLog(@"存图片时要执行的操作");
 }
 
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     //隐藏图片选择页面
     [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
+
 
 //注册按钮
 - (IBAction)registerAction:(id)sender {
-    
-    __weak RegisterViewController *weakRegisterVC = self;
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
@@ -111,66 +109,61 @@
         alertController.message = @"两次密码不一致，请重新输入!";
         [self presentViewController:alertController animated:YES completion:nil];
     } else {
- 
-        // 显示缓冲进度条
-        [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 90, 80) gifName:@"pika" andShowToView:weakRegisterVC.view];
-#warning 判断头像路径是否存在
-        // 设置头像
-        // 如果沙盒中存在头像路径，才执行存储头像路径到服务器的代码
-        
         // 向服务器发送注册信息
         // 新建AVUser对象实例
         AVUser *user = [AVUser user];
+        // 设置用户名
+        user.username = self.userNameTextField.text;
+        // 设置密码
+        user.password = self.passwordTextField.text;
+#warning 判断头像路径是否存在
+        // 设置头像
+        // 如果沙盒中存在头像路径，才执行存储头像路径到服务器的代码
         if (self.totalPath != nil) {
             AVFile *file = [AVFile fileWithName:user.username contentsAtPath:self.totalPath];
             [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 
-                // 设置用户名
-                user.username = self.userNameTextField.text;
-                // 设置密码
-                user.password = self.passwordTextField.text;
                 [user setObject:file.url forKey:@"avatar"];
-                // 设置宝宝性别
-                [user setObject:@"男宝宝" forKey:@"babyGender"];
-                
-                // 设置收藏帖子的数组
-                NSMutableArray *collectionTopics = [NSMutableArray array];
-                [user setObject:collectionTopics forKey:@"collectionTopics"];
-                
-                // 设置爱好
-                [user setObject:@"吃饭睡觉打豆豆" forKey:@"hobby"];
-                
-                // 设置登录状态
-                [user setObject:[NSNumber numberWithBool:NO] forKey:@"loginState"];
-                // 注册
-                [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (succeeded) {
-                        
-                        // 存储成功后结束缓冲进度条
-                        [MBProgressHUD hideHUDForView:weakRegisterVC.view animated:YES];
-                        
-                        // 注册成功
-                        UIAlertController *okRegisterAlertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"恭喜您注册账号成功，请牢记用户名和密码" preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *okRegisterAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                            // 注册成功，跳转到登录页面
-                            [self dismissViewControllerAnimated:YES completion:nil];
-                        }];
-                        [okRegisterAlertController addAction:okRegisterAction];
-                        // 弹出注册成功提示框
-                        [self presentViewController:okRegisterAlertController animated:YES completion:nil];
-                    } else {
-                        // 注册失败
-                        NSLog(@"%@", error.description);
-                        if (error.code == 202) {
-                            alertController.message = @"用户名已存在!";
-                            [self presentViewController:alertController animated:YES completion:nil];
-                        }
-                    }
-                }];
-                
+                NSLog(@"---------3-------%@", user[@"avatar"]);
             }];
         }
         
+        // 设置宝宝性别
+        [user setObject:@"男宝" forKey:@"babyGender"];
+        // 设置宝宝出生日期
+        [user setObject:[NSDate date] forKey:@"babyBirthday"];
+        // 设置妈妈出生日期
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        NSDate *momBirthday = [dateFormatter dateFromString:@"20151111"];
+        [user setObject:momBirthday forKey:@"momBirthday"];
+        
+        // 设置爱好
+        [user setObject:@"吃饭睡觉打豆豆" forKey:@"hobby"];
+        
+        // 设置登录状态
+        [user setObject:[NSNumber numberWithBool:NO] forKey:@"loginState"];
+        // 注册
+        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                // 注册成功
+                UIAlertController *okRegisterAlertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"恭喜您注册账号成功，请牢记用户名和密码" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okRegisterAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    // 注册成功，跳转到登录页面
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }];
+                [okRegisterAlertController addAction:okRegisterAction];
+                // 弹出注册成功提示框
+                [self presentViewController:okRegisterAlertController animated:YES completion:nil];
+            } else {
+                // 注册失败
+                NSLog(@"%@", error.description);
+                if (error.code == 202) {
+                    alertController.message = @"用户名已存在!";
+                    [self presentViewController:alertController animated:YES completion:nil];
+                }
+            }
+        }];
     }
 }
 

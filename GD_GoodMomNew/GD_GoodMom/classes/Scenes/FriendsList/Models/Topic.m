@@ -7,7 +7,6 @@
 //
 
 #import "Topic.h"
-#import "NSDate+HFExtension.h"
 
 // 间距
 #define kCellMargin 5
@@ -20,15 +19,29 @@
 
 @implementation Topic
 
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+- (void)setImages:(NSMutableArray *)images {
+    if (_images != images) {
+        _images = nil;
+        _images = images;
+        
+        _images = [NSMutableArray array];
+        
+        // 获取存放帖子图片url的数组
+        AVQuery *query = [AVQuery queryWithClassName:@"_File"];
+        [query whereKey:@"name" equalTo:[NSString stringWithFormat:@"%@", self.creatAt]];
+        NSArray *objects = [query findObjects];
+        for (AVObject *obj in objects) {
+           
+            NSString *imageURL = [obj[@"localData"] objectForKey:@"url"];
+            [self.images addObject:imageURL];
+        }
+    }
     
 }
 
-- (NSMutableArray *)commentsArray {
-    if (!_commentsArray) {
-        _commentsArray = [NSMutableArray array];
-    }
-    return _commentsArray;
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    
 }
 
 - (NSString *)description {

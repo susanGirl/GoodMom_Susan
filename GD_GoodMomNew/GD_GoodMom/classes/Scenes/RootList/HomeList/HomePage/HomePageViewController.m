@@ -9,25 +9,30 @@
 #import "HomePageViewController.h"
 
 #import "NetWorking.h"
+#import <MJRefresh.h>
+#import "HomePageCell_1.h"
+#import "HomePageCell_2.h"
+#import "HomePageCell_3.h"
 
 
 #define POST_URL @"http://api.miyabaobei.com/banner/listsExt/"
 #define POST_BODY @"sign=1b0e42f8090bc2b73d7b69454ffde1d2&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464053774068&app_id=android_app_id&timestamp=1464054235&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=FZ4Q5tsdK0T69aikOKMILPl9ykWVDwoWSuYrkV3UEQrp9ndN2dJ3R8dO22eopxzswrCGeGZjjKbiOKzAnXUfAQsMewVcr8SD6r2jMZ2MH3rQZMlAVMhdI4j-4i1z1gpAbH9yfM5qqZkWDgp4nnObPDR4uLK64JTvYGE4ENFq6N8%3D&"
-#define POST_Cell_URL @"http://api.miyabaobei.com/index/template/"
-#define POST_Cell_BODY @"sign=0d6f8a675c36ad51a1dc16365e989164&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464226049529&app_id=android_app_id&timestamp=1464226128&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&"
+//#define POST_Cell_URL @"http://api.miyabaobei.com/index/template/"
+//#define POST_Cell_BODY @"sign=0d6f8a675c36ad51a1dc16365e989164&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464226049529&app_id=android_app_id&timestamp=1464226128&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&"
 
-@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface HomePageViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate>
 
 
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (weak, nonatomic) IBOutlet UIScrollView *imagesScrollView;
+@property (strong, nonatomic) UIScrollView *imagesScrollView;
 #pragma mark --轮播图属性--
 @property(strong,nonatomic) UIPageControl *pageControl;
 @property(strong,nonatomic)NSMutableArray  *imagesArray;// 图片数组
 @property(strong,nonatomic)NSTimer  *timer;// 计时器
 @property(assign,nonatomic)NSInteger  count;
-
+@property(strong,nonatomic)UICollectionView  *collectionView;
+/*
 @property(strong,nonatomic)NSMutableArray  *listArray;// 数据总列表section个数的数组
 @property(strong,nonatomic)NSMutableArray  *modulesArray;// 每列数据中row个数的数组
 @property(strong,nonatomic)NSMutableArray  *dataArray;// 每个row中的图片个数的数组
@@ -38,23 +43,27 @@
 @property(strong,nonatomic)NSMutableArray  *outlet_itemsArray;
 @property(strong,nonatomic)NSMutableArray  *image_indexArray;
 @property(strong,nonatomic)NSMutableDictionary  *dict;
-
+*/
 @property (weak, nonatomic) IBOutlet UITableView *hometPageTableView;
 
 @end
 
 
 
-
+/*
 static NSString * const cellType_1 = @"cellType_1_identifier";
 static NSString * const cellType_2 = @"cellType_2_identifier";
 static NSString * const cellType_3 = @"cellType_3_identifier";
 static NSString * const cellType_4 = @"cellType_4_identifier";
 static NSString * const cellType_7 = @"cellType_7_identifier";
+*/
 
+static NSString * const homePageCell_1_ID = @"HomePageCell_1_identifier";
+static NSString * const homePageCell_2_ID = @"HomePageCell_2_identifier";
+static NSString * const homePageCell_3_ID = @"HomePageCell_3_identifier";
 @implementation HomePageViewController
 
-
+/*
 - (void)viewWillAppear:(BOOL)animated{
 
     _listArray = [NSMutableArray array];
@@ -66,47 +75,74 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     _outlet_itemsArray = [NSMutableArray array];
     _image_indexArray = [NSMutableArray array];
     _dict = [NSMutableDictionary dictionary];
-
-    [self netWorkingAndSetUp];
-
 }
+*/
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.view.backgroundColor = [UIColor colorWithRed:COLOR_arc green:COLOR_arc blue:COLOR_arc alpha:1.0];
+    _imagesScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenW*5/8)];
+    [self netWorkingAndSetUp];
+    // 设置头部视图
+    _hometPageTableView.tableHeaderView = _imagesScrollView;
+    // 注册
+    [_hometPageTableView registerNib:[UINib nibWithNibName:@"HomePageCell_1" bundle:nil] forCellReuseIdentifier:homePageCell_1_ID];
+    [_hometPageTableView registerNib:[UINib nibWithNibName:@"HomePageCell_2" bundle:nil] forCellReuseIdentifier:homePageCell_2_ID];
+    [_hometPageTableView registerNib:[UINib nibWithNibName:@"HomePageCell_3" bundle:nil] forCellReuseIdentifier:homePageCell_3_ID];
+    /*
     // 注册CellType_1
-   
     [_hometPageTableView registerNib:[UINib nibWithNibName:@"CellType_1" bundle:nil] forCellReuseIdentifier:cellType_1];
     [_hometPageTableView registerNib:[UINib nibWithNibName:@"CellType_2" bundle:nil] forCellReuseIdentifier:cellType_2];
     [_hometPageTableView registerNib:[UINib nibWithNibName:@"CellType_3" bundle:nil] forCellReuseIdentifier:cellType_3];
     [_hometPageTableView registerNib:[UINib nibWithNibName:@"CellType_4" bundle:nil] forCellReuseIdentifier:cellType_4];
     [_hometPageTableView registerNib:[UINib nibWithNibName:@"CellType_7" bundle:nil] forCellReuseIdentifier:cellType_7];
-
+     */
     // 设置代理
     self.hometPageTableView.delegate = self;
     self.hometPageTableView.dataSource = self;
-    
-    
-    
-    
-    self.view.backgroundColor = [UIColor colorWithRed:COLOR_arc green:COLOR_arc blue:COLOR_arc alpha:1.0];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    }
 
+
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    // 下拉刷新
+    [self setupRefresh];
+}
+#pragma mark -- 下拉刷新、上拉加载 --
+
+- (void)setupRefresh {
+    
+    // 下拉刷新
+    // 下拉后，开始网络请求
+    self.hometPageTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(netWorkingAndSetUp)];
+    // 改变下拉控件的透明度（根据拖拽比例切换透明度）
+    self.hometPageTableView.mj_header.automaticallyChangeAlpha = YES;
+    // 开始刷新
+    [self.hometPageTableView.mj_header beginRefreshing];
+    
+}
+#pragma mark -- 刷新数据 --
+- (void)reloadAllData {
+    [self.hometPageTableView reloadData];
+    // 停止下拉刷新
+    [self.hometPageTableView.mj_header endRefreshing];
+    // 隐藏缓冲进度条
+//    [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+}
 
 #pragma mark -- 首页
 // 解析数据
 - (void)netWorkingAndSetUp{
     
     // 轮播图数据解析
-    
+    __weak HomePageViewController *homeVC = self;
     [NetWorking netWorkingPostActionWithURLString:POST_URL bodyURLString:POST_BODY completeHandle:^(NSData * _Nullable data) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
         NSMutableArray *tempArray = [NSMutableArray array];
         for (NSArray *outletsArray in dict[@"content"][@"outlets"]) {
+            
             [tempArray addObject:outletsArray];
         }
-        self.imagesArray = [NSMutableArray array];
         
+        self.imagesArray = [NSMutableArray array];
         for (int i = 0; i < tempArray.count; i++) {
             NSMutableDictionary *dict1 = [NSMutableDictionary dictionaryWithDictionary:tempArray[i][@"pic"]];
             NSString *imgUrlString = dict1[@"url"];
@@ -114,10 +150,14 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
         }
         _count = self.imagesArray.count;
         [self drawView];
+        // 回到主线程，刷新列表
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [homeVC reloadAllData];
+        });
     }];
     
     // 解析Cell内容
-    
+    /*
     [NetWorking netWorkingPostActionWithURLString:POST_Cell_URL bodyURLString:POST_Cell_BODY completeHandle:^(NSData * _Nullable data) {
 
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -128,9 +168,9 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
             
         }
         
+        // 回到主线程，刷新列表
         dispatch_async(dispatch_get_main_queue(), ^{
-            // 回到主线程-->切记刷新-->刷新UI
-            [self.hometPageTableView reloadData];
+            [homeVC reloadAllData];
         });
         
     }];
@@ -158,13 +198,13 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
             
         }
         
+        // 回到主线程，刷新列表
         dispatch_async(dispatch_get_main_queue(), ^{
-            // 回到主线程-->切记刷新-->刷新UI
-            [self.hometPageTableView reloadData];
+            [homeVC reloadAllData];
         });
         
     }];
-    
+    */
     
 }
 #pragma mark--绘制轮播图--
@@ -176,8 +216,8 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     for (int i = 0; i < _count; i++) {
         UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(kScreenW*i, 0, kScreenW, CGRectGetMaxY(self.imagesScrollView.frame))];
         [imgView sd_setImageWithURL:[NSURL URLWithString:self.imagesArray[i]]placeholderImage:[UIImage imageNamed:[NSString stringWithFormat:@"%02d.jpg",i]]];
-#warning 记得取消注释
-//        [self.imagesScrollView addSubview:imgView];
+        
+        [self.imagesScrollView addSubview:imgView];
     }
     _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, self.imagesArray.count * 15, 50)];
     _pageControl.center = CGPointMake(kScreenW/2, CGRectGetMaxY(_imagesScrollView.frame)-25);
@@ -186,8 +226,8 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     _pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:241/255.0 green:158/255.0 blue:194/255.0 alpha:1];
     // 未选中的颜色
     _pageControl.pageIndicatorTintColor = [UIColor grayColor];
-#warning 记得取消注释
-//    [self.view addSubview:_pageControl];
+//    [self.hometPageTableView addSubview:_pageControl];
+    
     [_pageControl addTarget:self action:@selector(pageControlAction:) forControlEvents:UIControlEventValueChanged];
 
 }
@@ -210,14 +250,16 @@ NSInteger number;
     
 
 #pragma mark --tableView布局--
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
 
-    return self.listArray.count+self.outlets_infosArray.count;
+//    return self.listArray.count+self.outlets_infosArray.count;
+    return 3;
 }
 // 每个分组row个数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+    /*
     NSMutableArray *modulesArray = [NSMutableArray array];
     NSMutableArray *typeArray = [NSMutableArray array];
     if (section < self.listArray.count) {
@@ -245,13 +287,106 @@ NSInteger number;
         //        NSLog(@"-💧💧%ld💧->",section);
         return 2;
     }
+    */
+    if (section == 0) {
+        return 1;
+    }else if (section == 1){
+    
+        return 4;
+    }
+    return 3;
 }
 // 绘制tableViewcell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell = [self index:indexPath tableView:tableView];
-    return cell;
+//    UITableViewCell *cell = [self index:indexPath tableView:tableView];
+//    return cell;
+    if (indexPath.section == 0) {
+        HomePageCell_1 *cell = [_hometPageTableView dequeueReusableCellWithIdentifier:homePageCell_1_ID];
+        return cell;
+    }else if (indexPath.section == 1){
+        HomePageCell_2 *cell = [_hometPageTableView dequeueReusableCellWithIdentifier:homePageCell_2_ID];
+        cell.buttonVC = self;
+        if (indexPath.row == 0) {
+            cell.url_1 = @"http://www.mia.com/junsale/main";
+            cell.url_2 = @"http://www.mia.com/junesale/juneRedbag";
+            cell.name_1 = @"🎁礼物🎁";
+            cell.name_2 = @"💰红包💰";
+            return cell;
+        }else if (indexPath.row == 1) {
+            cell.url_1 = @"http://www.mia.com/special/module/index/5329/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/5027";
+            cell.name_1 = @"童装👗童鞋👟";
+            cell.name_2 = @"玩具⚽️童书📕";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"童装童鞋.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"玩具童书.jpg"] forState:UIControlStateNormal];
+            return cell;
+        }else if (indexPath.row == 2){
+            cell.url_1 = @"http://www.mia.com/special/module/index/5021/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/5206/pc";
+            cell.name_1 = @"全球纸尿裤🍙";
+            cell.name_2 = @"全球好奶粉🍼";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"全球纸尿裤.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"全球好奶粉.jpg"] forState:UIControlStateNormal];
+            return cell;
+        }else{
+            cell.url_1 = @"http://www.mia.com/special/module/index/4943/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/4930/pc";
+            cell.name_1 = @"孕产母乳👪";
+            cell.name_2 = @"美妆个护💄";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"孕产母乳.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"美妆个护.jpg"] forState:UIControlStateNormal];
+            return cell;
+        }
+    }else{
+        HomePageCell_3 *cell = [_hometPageTableView dequeueReusableCellWithIdentifier:homePageCell_3_ID];
+        cell.buttonVC = self;
+        if (indexPath.row == 0) {
+            cell.url_1 = @"http://www.mia.com/special/module/index/4931/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/4974/pc";
+            cell.url_3 = @"http://www.mia.com/special/module/index/5010/pc";
+            cell.name_1 = @"儿童寝居🏡";
+            cell.name_2 = @"宝宝洗护清洁🛁";
+            cell.name_3 = @"喂养用品🍲";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"儿童寝居.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"宝宝洗护清洁.jpg"] forState:UIControlStateNormal];
+            [cell.button_3 setBackgroundImage:[UIImage imageNamed:@"喂养用品.jpg"] forState:UIControlStateNormal];
+            
+            return cell;
+        }else if (indexPath.row == 1){
+            cell.url_1 = @"http://www.mia.com/special/module/index/4980/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/4897/pc";
+            cell.url_3 = @"http://www.mia.com/special/module/index/4922/pc";
+            cell.name_1 = @"辅食营养🍜";
+            cell.name_2 = @"宝宝出行🚗";
+            cell.name_3 = @"家居生活🏩";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"辅食营养.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"宝宝出行.jpg"] forState:UIControlStateNormal];
+            [cell.button_3 setBackgroundImage:[UIImage imageNamed:@"家居生活.jpg"] forState:UIControlStateNormal];
+            
+            return cell;
+        }else{
+            cell.url_1 = @"http://www.mia.com/special/module/index/4851/pc";
+            cell.url_2 = @"http://www.mia.com/special/module/index/4853/pc";
+            cell.url_3 = @"http://www.mia.com/special/module/index/4942/pc";
+            cell.name_1 = @"环球美食🍝";
+            cell.name_2 = @"营养保健🍛";
+            cell.name_3 = @"全球代购👜📲";
+            [cell.button_1 setBackgroundImage:[UIImage imageNamed:@"环球美食.jpg"] forState:UIControlStateNormal];
+            [cell.button_2 setBackgroundImage:[UIImage imageNamed:@"营养保健.jpg"] forState:UIControlStateNormal];
+            [cell.button_3 setBackgroundImage:[UIImage imageNamed:@"全球代购.jpg"] forState:UIControlStateNormal];
+            
+            return cell;
+        }
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (indexPath.section == 0) {
+        return 100;
+    }else{
+        return kScreenW/3;
+    }
 }
 // 绘图cell时需要调用的私有方法。
 /**
@@ -269,8 +404,10 @@ NSInteger number;
  *
  *  @return 当前cell样式
  */
-- (UITableViewCell *)index:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+
+//- (UITableViewCell *)index:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
     //==========
+    /*
     if (indexPath.section < self.listArray.count) {
         // 1-①
         NSMutableArray *typeArray = [NSMutableArray array];
@@ -427,26 +564,9 @@ NSInteger number;
     }
     
     return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+     */
     
-//    if (indexPath.section == 1 || indexPath.section == 2 || indexPath.section == 5) {
-//        if (indexPath.row == 0) {
-//            return 70;
-//        }
-//        return kScreenWidth/2;
-//    }else if (indexPath.section == 3){
-//        if (indexPath.row == 0 || indexPath.row == _typeArray.count) {
-//            return 70;
-//        }
-//        return kScreenWidth/2;
-//    }else if (indexPath.section == 4 && indexPath.row == 0){
-//    
-//        return 70;
-//    }
-    return kScreenW/2;
-}
+//}
 
 
 
@@ -481,6 +601,8 @@ NSInteger number;
 
 
 
+
+/*
 
 // TODO:选中触发事件--待优化，点击事件不对应
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -598,7 +720,7 @@ NSInteger number;
 }
 
 
-
+*/
 
 
 

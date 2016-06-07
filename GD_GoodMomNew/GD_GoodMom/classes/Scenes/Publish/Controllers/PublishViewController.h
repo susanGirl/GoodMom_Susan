@@ -10,7 +10,4 @@
 
 @interface PublishViewController : UIViewController
 
-
-
-
 @end

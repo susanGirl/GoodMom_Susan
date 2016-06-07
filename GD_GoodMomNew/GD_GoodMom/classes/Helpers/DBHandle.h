@@ -19,8 +19,7 @@
 #pragma mark---创建表
 - (void)createTable;
 #pragma mark 添加日记
-- (BOOL)insertNoteWith:(NoteModel *)note;
-//- (void)insertNoteWith:(NoteModel *)note;
+- (void)insertNoteWith:(NoteModel *)note;
 #pragma mark 删除日记
 - (void)deleteNoteWith:(NSString *)title;
 #pragma mark 修改日记

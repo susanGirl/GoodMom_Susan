@@ -9,7 +9,9 @@
 #import "YunYingViewController.h"
 #import "NetWorking.h"
 #import <UIImageView+WebCache.h>
-
+//#import <MJRefresh.h>
+#import "WebViewController.h"
+#import "MBProgressHUD+gifHUD.h"
 
 
 #import "CustomCell.h"
@@ -40,6 +42,9 @@
 @property(strong,nonatomic)NSMutableDictionary  *dict;
 
 @property(strong,nonatomic)UITableView  *tableView;
+@property(strong,nonatomic)UIView  *headerView;
+
+@property(assign,nonatomic)BOOL  flag;
 @end
 
 static NSString * const customCellID = @"customCellReuseIdentifier";
@@ -62,6 +67,11 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
         _outlet_itemsArray = [NSMutableArray array];
         _image_indexArray = [NSMutableArray array];
         _dict = [NSMutableDictionary dictionary];
+        
+        if (_flag == NO) {
+            [MBProgressHUD setupHUDWithFrame:CGRectMake(0, 0, 50, 50) gifName:@"pika" andShowToView:self.view];
+            _flag = YES;
+        }
     }
     return self;
 }
@@ -71,15 +81,8 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
-    
-    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 50)];// 只有高度有作用
-    header.backgroundColor = [UIColor cyanColor];
-    _tableView.tableHeaderView = header;
-    
-    
     // 创建tableView
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, (kScreenW*5/8)+130, kScreenW, kScreenH-130-(kScreenW*5/8)-50) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, kScreenH) style:UITableViewStylePlain];
     _tableView.separatorColor = [UIColor redColor];
     // 设置代理
     self.tableView.delegate = self;
@@ -94,19 +97,49 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     // 添加到视图上
     [self.view addSubview:self.tableView];
     
-    [self setUp];
+    
     [self netWorkingAndSetUp];
     [self netWorkingWithTableView];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    
+    // 下拉刷新
+//    [self setupRefresh];
 }
-
+/*
+#pragma mark -- 下拉刷新、上拉加载 --
+- (void)setupRefresh {
+    
+    // 下拉刷新
+    // 下拉后，开始网络请求
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(netWorkingAndSetUp)];
+    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(netWorkingWithTableView)];
+    // 改变下拉控件的透明度（根据拖拽比例切换透明度）
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
+    // 开始刷新
+    [self.tableView.mj_header beginRefreshing];
+    
+}
+#pragma mark -- 刷新数据 --
+- (void)reloadAllData {
+    [self.tableView reloadData];
+    // 停止下拉刷新
+    [self.tableView.mj_header endRefreshing];
+    // 隐藏缓冲进度条
+//    [MBProgressHUD hideHUDForView:self.tableView animated:YES];
+}
+*/
 #pragma mark -- 孕婴
 #pragma mark --轮播图
 // 解析数据并画图赋值
 - (void)netWorkingAndSetUp{
-    
+    __weak YunYingViewController *yunVC = self;
     _imagesScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenW, kScreenW*5/8)];
-    [self.view addSubview:_imagesScrollView];
+    _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 130+kScreenW*5/8)];// 只有高度有作用
+    
+    _tableView.tableHeaderView = _headerView;
+    [_headerView addSubview:_imagesScrollView];
+    [self setUp];
+    
     self.post_Url = @"http://api.miyabaobei.com/channel/banner/";
     self.post_Body = @"sign=173d6234cc91b79c632f5fa798c6be2e&dvc_id=7b1d8112322eac6a647266388accce6c&session=868047022239927&android_mac=40%3Ac6%3A2a%3A3d%3A8e%3Ae8&channel_code=qq&version=android_4_1_1&bi_session_id=7b1d8112322eac6a647266388accce6c_1464091662582&app_id=android_app_id&timestamp=1464092083&device_token=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&regid=3HnQZa6MCPr4BNhGwtMf2ie9N8AvCyrSFLawTixLB%2FA%3D&auth_session=&params=jSYZgo2Vk1VEFryM_T8BbmTwkNSqpFz3fkcSnwXLRIZtjxLK5xxtXtoGf6Y30ZlfoYTBonTZoTUj5BScJjrQU3WmybC2wrcSpXtVlRYoYN-8bn88snwjFGA1mi3FVDy9wAvIlpKKm308Cw-i9173XACwyepj7PQxZCcqpcDyswY%3D&";
     
@@ -123,13 +156,21 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
             NSString *imgUrlString = tempArray[i][@"image"];
             [self.imagesArray addObject:imgUrlString];
         }
-        NSLog(@"❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️孕婴-->解析");
+        NSLog(@"❤️❤️孕婴-->解析");
         _count = self.imagesArray.count;
         NSLog(@"%ld",_count);
         [self drawView];
+        // 回到主线程，刷新列表
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            [yunVC reloadAllData];
+            [_tableView reloadData];
+            if (_flag == YES) {
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                _flag = NO;
+            }
+        });
+        
     }];
-    
-    
 }
 - (void)drawView{
     
@@ -152,7 +193,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     _pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:241/255.0 green:158/255.0 blue:194/255.0 alpha:1];
     // 未选中的颜色
     _pageControl.pageIndicatorTintColor = [UIColor redColor];
-    [self.view addSubview:_pageControl];
+    [self.tableView addSubview:_pageControl];
     [_pageControl addTarget:self action:@selector(pageControlAction:) forControlEvents:UIControlEventValueChanged];
 }
 - (void)timerAction{
@@ -188,7 +229,7 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
 
     // 注册自定义cell
     [collectionView registerClass:[CustomCell class] forCellWithReuseIdentifier:customCellID];
-    [self.view addSubview:collectionView];
+    [self.headerView addSubview:collectionView];
     
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -226,38 +267,43 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
     cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
+- (void)url:(NSString *)url{
+
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = url;
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            UIWebView *webView = [[UIWebView alloc]initWithFrame:self.view.bounds];
-            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://m.mia.com/special/module/index/4091/app/"]];
-            
-            [webView setDelegate:self];
-            [self.view addSubview:webView];
-            [webView loadRequest:request];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@""]];
+            [self url:@"http://www.mia.com/search/s?k=%E9%98%B2%E6%99%92"];
         }else if (indexPath.row == 1){
-        
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E5%A5%B6%E7%93%B6"]];
+            
+            [self url:@"http://www.mia.com/search/s?k=%E5%A5%B6%E7%93%B6"];
         }else{
-        
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://m.mia.com/special/module/index/3334/app/"]];
+            
+            [self url:@"http://www.mia.com/search/s?k=%E5%AD%95%E4%BA%A7%E7%94%A8%E5%93%81"];
         }
     }else{
         if (indexPath.row == 0) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E7%B1%B3%E7%B2%89"]];
+            [self url:@"http://www.mia.com/search/s?k=%E7%B1%B3%E7%B2%89"];
+            
         }else if (indexPath.row == 1){
+            [self url:@"http://www.mia.com/search/s?k=%E6%8E%A8%E8%BD%A6"];
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E6%8E%A8%E8%BD%A6"]];
         }else{
+            [self url:@"http://www.mia.com/search/s?k=%E5%87%89%E5%B8%AD"];
             
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.mia.com/search/s?k=%E5%87%89%E5%B8%AD"]];
         }
     }
 }
 #pragma mark --tableView
 - (void)netWorkingWithTableView{
-
+    __weak YunYingViewController *yunVC = self;
     [NetWorking netWorkingPostActionWithURLString:POST_YUN_URL bodyURLString:POST_YUN_BODY completeHandle:^(NSData * _Nullable data) {
         
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -276,9 +322,13 @@ static NSString * const cellType_7 = @"cellType_7_identifier";
 //        }
         dispatch_async(dispatch_get_main_queue(), ^{
             // 回到主线程-->切记刷新-->刷新UI
-            [self.tableView reloadData];
+//            [yunVC reloadAllData];
+            [_tableView reloadData];
+            if (_flag == YES) {
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                _flag = NO;
+            }
         });
-        
     }];
     
 #pragma mark--tableView下半部分

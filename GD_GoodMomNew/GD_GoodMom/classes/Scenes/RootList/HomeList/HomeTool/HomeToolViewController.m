@@ -2,67 +2,59 @@
 //  HomeToolViewController.m
 //  GD_GoodMom
 //
-//  Created by lanou3g on 16/5/25.
+//  Created by lanou3g on 16/6/1.
 //  Copyright © 2016年 温哲. All rights reserved.
 //
 
 #import "HomeToolViewController.h"
-#define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#import "WebViewController.h"
 @interface HomeToolViewController ()<UIWebViewDelegate>
+
 
 @end
 
 @implementation HomeToolViewController
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:COLOR_arc green:COLOR_arc blue:COLOR_arc alpha:1.0];
     
-    webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, kScreenHeight-70)];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://m.mia.com/special/module/index/4922/app/"]];
-    
-    [webView setDelegate:self];
-    [self.view addSubview:webView];
-    [webView loadRequest:request];
+    //    _childBook setBackgroundImage:<#(nullable UIImage *)#> forState:<#(UIControlState)#>
     
 }
-// 1.网页开始加载的时候调用
-- (void )webViewDidStartLoad:(UIWebView *)webView{
-    
-    //创建UIActivityIndicatorView背底半透明View
-    UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-    [view setTag:108];
-    [view setBackgroundColor:[UIColor blackColor]];
-    [view setAlpha:0.5];
-    [self.view addSubview:view];
-    
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-    [activityIndicator setCenter:view.center];
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [view addSubview:activityIndicator];
-    
-    
-    [activityIndicator startAnimating];
-    
-    
+- (IBAction)button_1:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?k=%E5%8F%89%E5%8B%BA"];
 }
-// 2.网页加载完成的时候调用
-- (void )webViewDidFinishLoad:(UIWebView *)webView{
-    
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
-    
+- (IBAction)button_2:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?k=%E9%92%99%E7%89%87"];
 }
-// 3.网页加载错误的时候调用
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    
-    
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView*)[self.view viewWithTag:108];
-    [view removeFromSuperview];
+- (IBAction)button_3:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?cat=121"];
 }
+- (IBAction)button_4:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?cat=145"];
+}
+- (IBAction)button_5:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?cat=144"];
+}
+- (IBAction)button_6:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?k=%E6%89%AD%E6%89%AD%E8%BD%A6"];
+}
+- (IBAction)button_7:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?cat=190"];
+}
+- (IBAction)button_8:(id)sender {
+    [self pushWebView:@"http://www.mia.com/search/s?cat=122"];
+}
+- (void)pushWebView:(NSString *)url{
+
+    WebViewController *webViewVC = [WebViewController new];
+    
+    webViewVC.webView.scalesPageToFit = YES;// 是否自适应
+    
+    webViewVC.webViewUrl = url;
+    
+    [self.navigationController pushViewController:webViewVC animated:YES];
+}
+
+
 
 @end
