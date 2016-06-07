@@ -178,9 +178,12 @@ static NSString *const topicTextCellID = @"topicTextCell";
         TopicTextCell *cell = [tableView dequeueReusableCellWithIdentifier:topicTextCellID forIndexPath:indexPath];
         cell.topic = topic;
         return cell;
-    } else {
+    } else
+    {
+        
         // 如果是有文字和图片的帖子
         TopicCell *cell = [tableView dequeueReusableCellWithIdentifier:topicCellID forIndexPath:indexPath];
+
         cell.topic = topic;
         return cell;
     }

@@ -150,6 +150,7 @@
         [self presentViewController:alertController animated:YES completion:nil];
     }
 }
+
 #pragma mark -- 调用相册 --
 // 调用相册
 - (void)invokeAlbum {
@@ -162,6 +163,7 @@
     // 设置相册选完照片后，是否跳到编辑模式，进行图片编辑
     [self presentViewController:self.pickerController animated:YES completion:nil];
 }
+
 #pragma mark -- 调用相册和相机代理方法 --
 // 点击选择按钮执行的方法
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
@@ -263,6 +265,7 @@
 
 #pragma mark -- 删除相框和图片数组中的图片 --
 - (void)deleteImageViewAction:(UIButton *)button {
+    NSLog(@"------2---%ld", self.addImagesView.imgViewArray.count);
     // 获取要删除的相框
     UIImageView *imgView = (UIImageView *)button.superview;
     // 将相框中的图片从图片数组中移除
@@ -271,9 +274,18 @@
     [self.imgViewsArray removeObject:imgView];
     // 将相框从父视图移除
     [imgView removeFromSuperview];
-    
+    NSLog(@"------3---%ld", self.imgViewsArray.count);
 #warning 删除相框后，位置未更新成功。
     self.addImagesView.imgViewArray = self.imgViewsArray;
+//    NSLog(@"------1---%ld", self.addImagesView.imgViewArray.count);
+//    [self.addImagesView layoutSubviews];
+    
+//    for (UIImageView *imgView in self.addImagesView.subviews) {
+//        [imgView removeFromSuperview];
+//    }
+//    for (UIImage *image in self.imagesArray) {
+//        [self creatImgViewWithImage:image];
+//    }
 }
 
 // 点击取消按钮执行的方法

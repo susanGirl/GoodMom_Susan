@@ -16,30 +16,46 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="quc-O2-0JS">
-                        <rect key="frame" x="13" y="13" width="169" height="67"/>
+                        <rect key="frame" x="58" y="13" width="164" height="67"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgP-E5-EDT">
-                        <rect key="frame" x="187" y="13" width="120" height="67"/>
+                        <rect key="frame" x="227" y="13" width="80" height="67"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="120" id="cGK-go-LRw"/>
+                            <constraint firstAttribute="width" constant="80" id="cGK-go-LRw"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ngn-vI-ccT">
+                        <rect key="frame" x="13" y="13" width="40" height="40"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="GU7-TY-uoi"/>
+                            <constraint firstAttribute="width" constant="40" id="q7w-j1-yIK"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="quc-O2-0JS" firstAttribute="leading" secondItem="Ngn-vI-ccT" secondAttribute="trailing" constant="5" id="04V-6o-gbH"/>
                     <constraint firstItem="bgP-E5-EDT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="0d2-tZ-ak9"/>
+                    <constraint firstItem="Ngn-vI-ccT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="4KS-sb-9NS"/>
                     <constraint firstItem="quc-O2-0JS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="8Ur-iy-1aw"/>
+                    <constraint firstItem="Ngn-vI-ccT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="A34-uN-HED"/>
                     <constraint firstAttribute="bottomMargin" secondItem="quc-O2-0JS" secondAttribute="bottom" constant="5" id="AGu-QO-nlw"/>
                     <constraint firstAttribute="bottomMargin" secondItem="bgP-E5-EDT" secondAttribute="bottom" constant="5" id="P21-hv-4NY"/>
                     <constraint firstItem="bgP-E5-EDT" firstAttribute="leading" secondItem="quc-O2-0JS" secondAttribute="trailing" constant="5" id="egd-Jw-MEf"/>
                     <constraint firstItem="quc-O2-0JS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="sUz-wx-6UH"/>
                     <constraint firstAttribute="trailingMargin" secondItem="bgP-E5-EDT" secondAttribute="trailing" constant="5" id="yKG-dD-0pF"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="sUz-wx-6UH"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="textLabel" destination="quc-O2-0JS" id="gx5-Fk-9mf"/>

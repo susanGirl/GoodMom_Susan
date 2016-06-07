@@ -33,7 +33,6 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    NSLog(@"%s", __FUNCTION__);
     
         for (int i = 0; i < self.imgViewArray.count; i++) {
             UIImageView *imgView = self.imgViewArray[i];

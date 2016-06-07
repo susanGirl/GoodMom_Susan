@@ -12,7 +12,7 @@
 #import <AVOSCloud/AVOSCloud.h>
 #import "Comment.h"
 #import <UMSocial.h>
-
+#import "LoginViewController.h"
 
 // tableView.ContentView内边距
 // 显示内容区域距离屏幕顶部偏移量
@@ -93,28 +93,39 @@ static NSString *const topicCommentCellID = @"topicCommentCell";
 #pragma mark -- 分享帖子(友盟分享） --
 - (void)shareAction {
     
-    AVFile *imgFile = [AVFile fileWithURL:self.topic.images[0]];
-    NSData *data = [imgFile getData];
-    UIImage *img = [UIImage imageWithData:data];
-    
-    
     //如果需要分享回调，请将delegate对象设置self，并实现下面的回调方法
-//    [UMSocialData defaultData].extConfig.title = @"分享到";
-//    [UMSocialData defaultData].extConfig.qqData.url = @"http://baidu.com";
-//    [UMSocialData defaultData].extConfig.qqData.title = @"QQ分享title";
-//    [UMSocialData defaultData].extConfig.qzoneData.url = @"http://baidu.com";
-//    [UMSocialData defaultData].extConfig.qzoneData.title = @"Qzone分享title";
-//    [UMSocialData defaultData].extConfig.wechatSessionData.url = @"http://baidu.com";
-//    [UMSocialData defaultData].extConfig.wechatSessionData.title = @"微信好友title";
-//    [UMSocialData defaultData].extConfig.wechatTimelineData.url = @"http://baidu.com";
-//    [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"微信朋友圈title";
+    //    [UMSocialData defaultData].extConfig.title = @"分享到";
+    //    [UMSocialData defaultData].extConfig.qqData.url = @"http://baidu.com";
+    //    [UMSocialData defaultData].extConfig.qqData.title = @"QQ分享title";
+    //    [UMSocialData defaultData].extConfig.qzoneData.url = @"http://baidu.com";
+    //    [UMSocialData defaultData].extConfig.qzoneData.title = @"Qzone分享title";
+    //    [UMSocialData defaultData].extConfig.wechatSessionData.url = @"http://baidu.com";
+    //    [UMSocialData defaultData].extConfig.wechatSessionData.title = @"微信好友title";
+    //    [UMSocialData defaultData].extConfig.wechatTimelineData.url = @"http://baidu.com";
+    //    [UMSocialData defaultData].extConfig.wechatTimelineData.title = @"微信朋友圈title";
     
-    [UMSocialSnsService presentSnsIconSheetView:self
-                                         appKey:@"5750db84e0f55a2afc00017a"
-                                      shareText:self.topic.text
-                                     shareImage:img
-                                shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone]
-                                       delegate:self];
+    
+    if (self.topic.images.count != 0) {
+        // 分享带图片和文字的帖子
+        AVFile *imgFile = [AVFile fileWithURL:self.topic.images[0]];
+        NSData *data = [imgFile getData];
+        UIImage *img = [UIImage imageWithData:data];
+        
+        [UMSocialSnsService presentSnsIconSheetView:self
+                                             appKey:@"5750db84e0f55a2afc00017a"
+                                          shareText:self.topic.text
+                                         shareImage:img
+                                    shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone]
+                                           delegate:self];
+    }else {
+        
+        [UMSocialSnsService presentSnsIconSheetView:self
+                                             appKey:@"5750db84e0f55a2afc00017a"
+                                          shareText:self.topic.text
+                                         shareImage:nil
+                                    shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatTimeline,UMShareToSina,UMShareToQQ,UMShareToQzone]
+                                           delegate:self];
+    }
     
     // 1. 支持分享编辑页和授权页面横屏，必须要在出现列表页面前设置:
     [UMSocialConfig setSupportedInterfaceOrientations:UIInterfaceOrientationMaskLandscape];
@@ -138,6 +149,7 @@ static NSString *const topicCommentCellID = @"topicCommentCell";
 
 #pragma mark -- 存放帖子的所有评论的数组 --
 - (NSMutableArray *)commentsArray {
+    
     if (!_commentsArray) {
         _commentsArray = [NSMutableArray array];
         
@@ -168,51 +180,62 @@ static NSString *const topicCommentCellID = @"topicCommentCell";
     
     __weak TopicCommentListViewController *weakTopicCommentListVC = self;
     
-    // 根据帖子id从服务器查找该帖子
-    AVObject *currentTopic = [Topic objectWithClassName:@"Topic" objectId:self.topic.objectId];
-    
-    // 更新服务器数据
-    [currentTopic fetchIfNeededInBackgroundWithBlock:^(AVObject *object, NSError *error) {
-
-        // 将评论内容赋值给帖子对象
-        NSMutableDictionary *comment = [NSMutableDictionary dictionary];
-        [comment setObject:self.commentTextField.text forKey:@"content"];
-        [comment setObject:[AVUser currentUser].username forKey:@"username"];
-        [comment setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
-        [object[@"commentsArray"] addObject:comment];
-        [object setObject:object[@"commentsArray"] forKey:@"commentsArray"];
+    if ([AVUser currentUser] && [[AVUser currentUser][@"loginState"] boolValue] == YES) {
         
-        // 获取评论数量,并赋值给帖子对象
-        NSArray *commentsArray = object[@"commentsArray"];
-        [object setObject:[NSNumber numberWithInteger:commentsArray.count] forKey:@"commentCount"];
+        // 如果用户登录了才可以收藏
         
-        // 提示框
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            // 发表评论成功后返回到上一页面
-            [weakTopicCommentListVC.navigationController popViewControllerAnimated:YES];
+        // 根据帖子id从服务器查找该帖子
+        AVObject *currentTopic = [Topic objectWithClassName:@"Topic" objectId:self.topic.objectId];
+        
+        // 更新服务器数据
+        [currentTopic fetchIfNeededInBackgroundWithBlock:^(AVObject *object, NSError *error) {
+            
+            // 将评论内容赋值给帖子对象
+            NSMutableDictionary *comment = [NSMutableDictionary dictionary];
+            [comment setObject:self.commentTextField.text forKey:@"content"];
+            [comment setObject:[AVUser currentUser].username forKey:@"username"];
+            [comment setObject:[AVUser currentUser][@"avatar"] forKey:@"avatar"];
+            [object[@"commentsArray"] addObject:comment];
+            [object setObject:object[@"commentsArray"] forKey:@"commentsArray"];
+            
+            // 获取评论数量,并赋值给帖子对象
+            NSArray *commentsArray = object[@"commentsArray"];
+            [object setObject:[NSNumber numberWithInteger:commentsArray.count] forKey:@"commentCount"];
+            
+            // 提示框
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                // 发表评论成功后返回到上一页面
+                [weakTopicCommentListVC.navigationController popViewControllerAnimated:YES];
+            }];
+            [alert addAction:okAction];
+            
+            if (!error) {
+                
+                // 让本地数据与云端保持一致
+                currentTopic.fetchWhenSave = true;
+                [currentTopic saveInBackground];
+                
+                alert.message = @"评论成功!";
+                // 弹出提示框
+                [weakTopicCommentListVC presentViewController:alert animated:YES completion:nil];
+                
+                // 使用通知中心刷新上个页面
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"updateComments" object:nil];
+                
+            } else {
+                alert.message = [NSString stringWithFormat:@"评论失败，错误原因%@", error];
+                // 弹出提示框
+                [weakTopicCommentListVC presentViewController:alert animated:YES completion:nil];
+            }
         }];
-        [alert addAction:okAction];
         
-        if (!error) {
-            
-            // 让本地数据与云端保持一致
-            currentTopic.fetchWhenSave = true;
-            [currentTopic saveInBackground];
-            
-            alert.message = @"评论成功!";
-            // 弹出提示框
-            [weakTopicCommentListVC presentViewController:alert animated:YES completion:nil];
-            
-            // 使用通知中心刷新上个页面
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateComments" object:nil];
-            
-        } else {
-            alert.message = [NSString stringWithFormat:@"评论失败，错误原因%@", error];
-            // 弹出提示框
-            [weakTopicCommentListVC presentViewController:alert animated:YES completion:nil];
-        }
-    }];
+    } else {
+        // 如果没有用户登陆，即currentUser为空，则跳转到登陆页面
+        LoginViewController *loginVC = [LoginViewController new];
+        loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:loginVC animated:YES completion:nil];
+    }
 }
 
 
@@ -239,6 +262,11 @@ static NSString *const topicCommentCellID = @"topicCommentCell";
         topicCell.topic = self.topic;
         topicCell.collectionButton.hidden = YES;
         topicCell.commentButton.hidden = YES;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, topicCell.contentView.frame.size.height - 70, topicCell.contentView.frame.size.width, 70)];
+        label.backgroundColor = kGlobalBackgroudColor;
+        label.font = [UIFont systemFontOfSize:17];
+        label.text = @" 请发表你的看法~~~~";
+        [topicCell.contentView addSubview:label];
         return topicCell;
     }
     

@@ -10,6 +10,7 @@
 #import "TopicCommentListViewController.h"
 #import "NSDate+HFExtension.h"
 #import <AVOSCloud/AVOSCloud.h>
+#import "LoginViewController.h"
 
 // 间距
 #define kCellMargin 5
@@ -202,93 +203,102 @@
 #pragma mark -- 收藏帖子 --
 - (IBAction)collectionTopicAction:(id)sender {
     
-    UIButton *collectionButton = (UIButton *)sender;
-    
-    AVQuery *query = [AVQuery queryWithClassName:@"Topic"];
-    [query whereKey:@"objectId" equalTo:self.topic.objectId];
-
-    // 到服务器查找该帖子
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        // 获取帖子
-    Topic *currentTopic = objects[0];
+    if ([AVUser currentUser] && [[AVUser currentUser][@"loginState"] boolValue] == YES) {
+        // 如果用户登录了才可以收藏
         
-        // 获取帖子当前收藏数量
-        NSInteger currentCollectionCount = [[[currentTopic objectForKey:@"localData"] objectForKey:@"collectionCount"] integerValue];
+        UIButton *collectionButton = (UIButton *)sender;
         
-        // 提示框
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:okAction];
+        AVQuery *query = [AVQuery queryWithClassName:@"Topic"];
+        [query whereKey:@"objectId" equalTo:self.topic.objectId];
         
-
-        // 如果没有收藏该帖子，就开始收藏
-        if (![[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
+        // 到服务器查找该帖子
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            // 获取帖子
+            Topic *currentTopic = objects[0];
             
-            // 收藏数量加“1”
-            currentCollectionCount += 1;
+            // 获取帖子当前收藏数量
+            NSInteger currentCollectionCount = [[[currentTopic objectForKey:@"localData"] objectForKey:@"collectionCount"] integerValue];
             
-            // 将要收藏的帖子保存到当前用户的收藏列表中
-            [[[AVUser currentUser] objectForKey:@"collectionTopics"] addObject:currentTopic.objectId];
-            [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-            [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            // 提示框
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:okAction];
+            
+            
+            // 如果没有收藏该帖子，就开始收藏
+            if (![[AVUser currentUser][@"collectionTopics"] containsObject:currentTopic.objectId]) {
+                
+                // 收藏数量加“1”
+                currentCollectionCount += 1;
+                
+                // 将要收藏的帖子保存到当前用户的收藏列表中
+                [[[AVUser currentUser] objectForKey:@"collectionTopics"] addObject:currentTopic.objectId];
+                [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
+                [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    
+                    if (succeeded) {
+                        // 提示收藏成功
+                        alert.message = @"收藏成功!";
+                        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                        
+                        // collectionButton改为选中状态
+                        collectionButton.selected = YES;
+                        
+                    }else {
+                        alert.message = [NSString stringWithFormat:@"收藏失败，失败原因:%@", error];
+                    }
+                }];
+                
+            } else {
+                
+                // 如果已经收藏了该帖子，就取消收藏
+                
+                // 收藏数量减“1”
+                currentCollectionCount -= 1;
+                
+                // 将收藏的帖子保存到当前用户的收藏列表中
+                [[[AVUser currentUser] objectForKey:@"collectionTopics"] removeObject:currentTopic.objectId];
+                [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
+                [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded) {
+                        // 提取取消收藏成功
+                        alert.message = @"取消收藏成功!";
+                        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                        
+                        // collectionButton改为未选中状态
+                        collectionButton.selected = NO;
+                        
+                    } else {
+                        alert.message = [NSString stringWithFormat:@"取消收藏失败，失败原因：%@", error];
+                    }
+                }];
+            }
+            
+            // 设置最新收藏数量
+            [currentTopic setObject:[NSNumber numberWithInteger:currentCollectionCount] forKey:@"collectionCount"];
+            
+            // 保存到服务器
+            [currentTopic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 
                 if (succeeded) {
-                    // 提示收藏成功
-                    alert.message = @"收藏成功!";
-                    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
                     
-                    // collectionButton改为选中状态
-                    collectionButton.selected = YES;
+                    // 改变帖子页面显示的收藏数量
+                    [self updateCollectionCountShow:currentCollectionCount];
                     
                 }else {
-                    alert.message = [NSString stringWithFormat:@"收藏失败，失败原因:%@", error];
-                }
-            }];
-            
-        } else {
-            
-            // 如果已经收藏了该帖子，就取消收藏
-            
-            // 收藏数量减“1”
-            currentCollectionCount -= 1;
-            
-            // 将收藏的帖子保存到当前用户的收藏列表中
-            [[[AVUser currentUser] objectForKey:@"collectionTopics"] removeObject:currentTopic.objectId];
-            [[AVUser currentUser] setObject:[[AVUser currentUser] objectForKey:@"collectionTopics"] forKey:@"collectionTopics"];
-            [[AVUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    // 提取取消收藏成功
-                    alert.message = @"取消收藏成功!";
+                    // 提示框
+                    alert.message = [NSString stringWithFormat:@"收藏失败，错误码%@", error];
                     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-                    
-                    // collectionButton改为未选中状态
-                    collectionButton.selected = NO;
-                    
-                } else {
-                    alert.message = [NSString stringWithFormat:@"取消收藏失败，失败原因：%@", error];
                 }
             }];
-        }
-        
-        // 设置最新收藏数量
-        [currentTopic setObject:[NSNumber numberWithInteger:currentCollectionCount] forKey:@"collectionCount"];
-        
-        // 保存到服务器
-        [currentTopic saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-
-            if (succeeded) {
-
-                // 改变帖子页面显示的收藏数量
-                [self updateCollectionCountShow:currentCollectionCount];
-                
-            }else {
-                // 提示框
-                alert.message = [NSString stringWithFormat:@"收藏失败，错误码%@", error];
-                [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-            }
+            
         }];
-        
-    }];
+    } else {
+        // 如果没有用户登陆，即currentUser为空，则跳转到登陆页面
+        LoginViewController *loginVC = [LoginViewController new];
+        loginVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:loginVC animated:YES completion:nil];
+    }
 }
 
 #pragma  mark -- 改变帖子页面显示的收藏数量 --

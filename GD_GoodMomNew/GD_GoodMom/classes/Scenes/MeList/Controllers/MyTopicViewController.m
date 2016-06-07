@@ -34,6 +34,9 @@ static NSString *const myTopicCellID = @"myTopic";
     
     self.tableView.contentInset = UIEdgeInsetsMake(kTopOffset, 0, kBottomOffset, 0);
     
+    // 取消系统分割线
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // 注册cell
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([MyTopicCell class]) bundle:nil] forCellReuseIdentifier:myTopicCellID];
     
